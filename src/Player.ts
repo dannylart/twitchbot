@@ -1,7 +1,7 @@
 import * as jsonfile from 'jsonfile';
 import {Character} from './Character';
-import {INumberStore} from './IStore';
 import {IAttributes} from './IAttributes';
+import {INumberStore} from './IStore';
 
 export class Player extends Character {
     public readonly name: string;
@@ -46,6 +46,7 @@ export class Player extends Character {
         // Heal up the character
         this.health = this.maxHealth;
         this.mana = this.maxMana;
+
         return this.classes[cls];
     }
 

@@ -265,6 +265,16 @@ export class Game extends EventDispatcher {
         return null;
     }
 
+    public playerHasSpell(player: Player, spellName: string): boolean {
+        for (const cls in player.classes) {
+            const c: Class | null = this.getClass(cls, player.classes[cls]);
+            if (c && c.getClassSpells().indexOf(spellName) > -1)
+                return true;
+        }
+
+        return false;
+    }
+
     public getAvailableClasses(p: Player): string[] {
         const classes: string[] = [];
         for (const cls of Game.classes)

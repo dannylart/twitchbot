@@ -1,6 +1,6 @@
 import { Character } from './Character';
-import { INumberStore } from './IStore';
 import { IAttributes } from './IAttributes';
+import { INumberStore } from './IStore';
 export declare class Player extends Character {
     readonly name: string;
     classes: INumberStore;

@@ -1,6 +1,8 @@
 import {EventDispatcher} from 'simple-ts-event-dispatcher';
+import {BuffManager} from './BuffManager';
+import {IAttributes} from './IAttributes';
 
-export abstract class Character extends EventDispatcher {
+export abstract class Character extends EventDispatcher implements IAttributes {
     // Attributes
     public health: number;
     public maxHealth: number;
@@ -12,6 +14,8 @@ export abstract class Character extends EventDispatcher {
     public intelligence: number; // spell power
     public luck: number; // crit & other misc.
 
+    public buffs: BuffManager;
+
     constructor() {
         super();
         this.health = 1000;
@@ -22,6 +26,7 @@ export abstract class Character extends EventDispatcher {
         this.dexterity = 10;
         this.intelligence = 10;
         this.luck = 10;
+        this.buffs = new BuffManager(this);
     }
 
     public get dead(): boolean {
@@ -31,7 +36,7 @@ export abstract class Character extends EventDispatcher {
     public abstract get name(): string;
 
     get attackPower(): number {
-        return this.strength * 10;
+        return (this.strength + this.buffs.attributes.strength) * 10;
     }
 
     get attackDamage(): number {
@@ -42,7 +47,7 @@ export abstract class Character extends EventDispatcher {
     }
 
     get criticalHit(): boolean {
-        return Math.floor(Math.random() * 100) <= this.luck;
+        return Math.floor(Math.random() * 100) <= this.luck + this.buffs.attributes.luck;
     }
 
     public attack(e: Character): string {

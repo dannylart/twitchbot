@@ -1,5 +1,7 @@
 import { EventDispatcher } from 'simple-ts-event-dispatcher';
-export declare abstract class Character extends EventDispatcher {
+import { BuffManager } from './BuffManager';
+import { IAttributes } from './IAttributes';
+export declare abstract class Character extends EventDispatcher implements IAttributes {
     health: number;
     maxHealth: number;
     mana: number;
@@ -8,6 +10,7 @@ export declare abstract class Character extends EventDispatcher {
     dexterity: number;
     intelligence: number;
     luck: number;
+    buffs: BuffManager;
     constructor();
     readonly dead: boolean;
     readonly abstract name: string;

@@ -263,6 +263,14 @@ var Game = /** @class */ (function (_super) {
         }
         return null;
     };
+    Game.prototype.playerHasSpell = function (player, spellName) {
+        for (var cls in player.classes) {
+            var c = this.getClass(cls, player.classes[cls]);
+            if (c && c.getClassSpells().indexOf(spellName) > -1)
+                return true;
+        }
+        return false;
+    };
     Game.prototype.getAvailableClasses = function (p) {
         var classes = [];
         for (var _i = 0, _a = Game.classes; _i < _a.length; _i++) {

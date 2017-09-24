@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var simple_ts_event_dispatcher_1 = require("simple-ts-event-dispatcher");
+var BuffManager_1 = require("./BuffManager");
 var Character = /** @class */ (function (_super) {
     __extends(Character, _super);
     function Character() {
@@ -23,6 +24,7 @@ var Character = /** @class */ (function (_super) {
         _this.dexterity = 10;
         _this.intelligence = 10;
         _this.luck = 10;
+        _this.buffs = new BuffManager_1.BuffManager(_this);
         return _this;
     }
     Object.defineProperty(Character.prototype, "dead", {
@@ -34,7 +36,7 @@ var Character = /** @class */ (function (_super) {
     });
     Object.defineProperty(Character.prototype, "attackPower", {
         get: function () {
-            return this.strength * 10;
+            return (this.strength + this.buffs.attributes.strength) * 10;
         },
         enumerable: true,
         configurable: true
@@ -50,7 +52,7 @@ var Character = /** @class */ (function (_super) {
     });
     Object.defineProperty(Character.prototype, "criticalHit", {
         get: function () {
-            return Math.floor(Math.random() * 100) <= this.luck;
+            return Math.floor(Math.random() * 100) <= this.luck + this.buffs.attributes.luck;
         },
         enumerable: true,
         configurable: true

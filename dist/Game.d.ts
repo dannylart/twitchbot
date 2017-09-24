@@ -38,6 +38,7 @@ export declare class Game extends EventDispatcher {
     getWhisperActions(): string[];
     generateRandomRoom(id: number, x: number, y: number): IRoom;
     getClass(cls: string, level: number): Class | null;
+    playerHasSpell(player: Player, spellName: string): boolean;
     getAvailableClasses(p: Player): string[];
     private loop();
 }

@@ -48,6 +48,9 @@ var Player = /** @class */ (function (_super) {
         this.intelligence += attrs.intelligence;
         this.luck += attrs.luck;
         this.save();
+        // Heal up the character
+        this.health = this.maxHealth;
+        this.mana = this.maxMana;
         return this.classes[cls];
     };
     Player.prototype.fileName = function () {
