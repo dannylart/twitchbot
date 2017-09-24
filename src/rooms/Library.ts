@@ -1,5 +1,5 @@
+import {Wizard} from '../enemies/Wizard';
 import {Room} from '../Room';
-import {Goblin} from '../enemies/Goblin';
 
 export class Library extends Room {
     get name(): string {
@@ -7,6 +7,7 @@ export class Library extends Room {
     }
 
     protected generate(): void {
-        this.addEnemy(Goblin);
+        this.addEnemy(Wizard);
+        this.addEnemy(Wizard);
     }
 }
