@@ -7,7 +7,7 @@ export class Entrance extends Room {
     }
 
     protected generate(): void {
-        const count: number = 4 + Math.floor(this.difficulty / 5);
+        const count: number = 2 + Math.floor(this.difficulty / 5);
         for (let i: number = 1; i <= count; i++)
             this.addEnemy(Goblin);
     }

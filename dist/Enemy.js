@@ -20,7 +20,6 @@ var Enemy = /** @class */ (function (_super) {
         return _this;
     }
     Enemy.prototype.initialize = function () {
-        console.log(this.display, this.attributes);
         this.health = this.attributes.health;
         this.maxHealth = this.attributes.health;
         this.mana = this.attributes.mana;

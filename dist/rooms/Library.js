@@ -10,8 +10,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var Wizard_1 = require("../enemies/Wizard");
 var Room_1 = require("../Room");
-var Goblin_1 = require("../enemies/Goblin");
 var Library = /** @class */ (function (_super) {
     __extends(Library, _super);
     function Library() {
@@ -25,7 +25,8 @@ var Library = /** @class */ (function (_super) {
         configurable: true
     });
     Library.prototype.generate = function () {
-        this.addEnemy(Goblin_1.Goblin);
+        this.addEnemy(Wizard_1.Wizard);
+        this.addEnemy(Wizard_1.Wizard);
     };
     return Library;
 }(Room_1.Room));
