@@ -17,24 +17,27 @@ var Enemy = /** @class */ (function (_super) {
         var _this = _super.call(this) || this;
         _this.enemyId = enemyId;
         _this.level = level;
-        _this.attributes = {
-            health: 10,
-            mana: 0,
-            strength: 2,
-            dexterity: 2,
-            intelligence: 2,
-            luck: 2
-        };
-        _this.health += _this.attributes.health * level;
-        _this.maxHealth += _this.attributes.health * level;
-        _this.mana += _this.attributes.mana * level;
-        _this.maxMana += _this.attributes.mana * level;
-        _this.strength += _this.attributes.strength * level;
-        _this.dexterity += _this.attributes.dexterity * level;
-        _this.intelligence += _this.attributes.intelligence * level;
-        _this.luck += _this.attributes.luck * level;
         return _this;
     }
+    Enemy.prototype.initialize = function () {
+        console.log(this.display, this.attributes);
+        this.health = this.attributes.health;
+        this.maxHealth = this.attributes.health;
+        this.mana = this.attributes.mana;
+        this.maxMana = this.attributes.mana;
+        this.strength = this.attributes.strength;
+        this.dexterity = this.attributes.dexterity;
+        this.intelligence = this.attributes.intelligence;
+        this.luck = this.attributes.luck;
+        this.health += Math.floor(this.attributesPerLevel.health * this.level);
+        this.maxHealth += Math.floor(this.attributesPerLevel.health * this.level);
+        this.mana += Math.floor(this.attributesPerLevel.mana * this.level);
+        this.maxMana += Math.floor(this.attributesPerLevel.mana * this.level);
+        this.strength += Math.floor(this.attributesPerLevel.strength * this.level);
+        this.dexterity += Math.floor(this.attributesPerLevel.dexterity * this.level);
+        this.intelligence += Math.floor(this.attributesPerLevel.intelligence * this.level);
+        this.luck += Math.floor(this.attributesPerLevel.luck * this.level);
+    };
     Object.defineProperty(Enemy.prototype, "id", {
         get: function () {
             return "e" + this.enemyId;

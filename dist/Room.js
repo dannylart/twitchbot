@@ -23,6 +23,7 @@ var Room = /** @class */ (function (_super) {
         _this.enemies = [];
         _this.objects = [];
         _this.doors = [];
+        _this.enemyCounter = 1;
         console.log("Room with id " + _this.id + " created.");
         _this.generate();
         return _this;
@@ -95,6 +96,13 @@ var Room = /** @class */ (function (_super) {
             }
         }
         return results.join(' ');
+    };
+    Room.prototype.addEnemy = function (t) {
+        var enemy = new t(this.enemyCounter, this.difficulty);
+        enemy.initialize();
+        this.enemies.push(enemy);
+        this.enemyCounter += 1;
+        return enemy;
     };
     return Room;
 }(simple_ts_event_dispatcher_1.EventDispatcher));

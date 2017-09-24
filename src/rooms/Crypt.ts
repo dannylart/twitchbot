@@ -7,8 +7,7 @@ export class Crypt extends Room {
     }
 
     protected generate(): void {
-        const dragon: Dragon = new Dragon(1, this.difficulty);
-        this.enemies.push(dragon);
+        const dragon: Dragon = this.addEnemy<Dragon>(Dragon);
         dragon.once('death', this.endGame, this);
     }
 }

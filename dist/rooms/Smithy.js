@@ -25,7 +25,7 @@ var Smithy = /** @class */ (function (_super) {
         configurable: true
     });
     Smithy.prototype.generate = function () {
-        this.enemies.push(new Goblin_1.Goblin(1, this.difficulty));
+        this.addEnemy(Goblin_1.Goblin);
     };
     return Smithy;
 }(Room_1.Room));

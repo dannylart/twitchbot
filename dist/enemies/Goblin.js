@@ -16,12 +16,20 @@ var Goblin = /** @class */ (function (_super) {
     function Goblin() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.attributes = {
-            health: 10,
+            health: 100,
             mana: 0,
-            strength: 1,
+            strength: 4,
+            dexterity: 2,
+            intelligence: 0,
+            luck: 0
+        };
+        _this.attributesPerLevel = {
+            health: 20,
+            mana: 0,
+            strength: 2,
             dexterity: 1,
-            intelligence: 1,
-            luck: 1
+            intelligence: .25,
+            luck: 0
         };
         return _this;
     }

@@ -5,9 +5,14 @@ export class Inventory extends Action {
     public static whisper: boolean = true;
 
     public process(): IActionResult {
+        const items: string[] = [];
+        for (const i in this.player.inventory) {
+            items.push(`${this.player.inventory[i]}x ${i}`);
+        }
+
         return {
-            message: `${this.player.name} looks at his items.`,
-            success: true
+            message: items.length > 0 ? `${this.player.name} has the following items: ${items.join(', ')}` : `${this.player.name} has no items.`,
+            success: items.length > 0
         };
     }
 }

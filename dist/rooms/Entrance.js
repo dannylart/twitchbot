@@ -25,9 +25,9 @@ var Entrance = /** @class */ (function (_super) {
         configurable: true
     });
     Entrance.prototype.generate = function () {
-        var count = Math.floor(this.difficulty / 5);
+        var count = 1 + Math.floor(this.difficulty / 5);
         for (var i = 1; i <= count; i++)
-            this.enemies.push(new Goblin_1.Goblin(1, this.difficulty));
+            this.addEnemy(Goblin_1.Goblin);
     };
     return Entrance;
 }(Room_1.Room));

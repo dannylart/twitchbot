@@ -15,7 +15,7 @@ export abstract class Character extends EventDispatcher {
     constructor() {
         super();
         this.health = 1000;
-        this.maxHealth = 100;
+        this.maxHealth = 1000;
         this.mana = 50;
         this.maxMana = 50;
         this.strength = 10;

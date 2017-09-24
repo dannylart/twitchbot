@@ -17,9 +17,13 @@ var Inventory = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Inventory.prototype.process = function () {
+        var items = [];
+        for (var i in this.player.inventory) {
+            items.push(this.player.inventory[i] + "x " + i);
+        }
         return {
-            message: this.player.name + " looks at his items.",
-            success: true
+            message: items.length > 0 ? this.player.name + " has the following items: " + items.join(', ') : this.player.name + " has no items.",
+            success: items.length > 0
         };
     };
     Inventory.keyword = ':!inventory';

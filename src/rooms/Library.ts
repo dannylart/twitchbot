@@ -7,6 +7,6 @@ export class Library extends Room {
     }
 
     protected generate(): void {
-        this.enemies.push(new Goblin(1, this.difficulty));
+        this.addEnemy(Goblin);
     }
 }

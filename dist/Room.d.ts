@@ -1,6 +1,6 @@
+import { EventDispatcher } from 'simple-ts-event-dispatcher';
 import { Character } from './Character';
 import { Enemy } from './Enemy';
-import { EventDispatcher } from 'simple-ts-event-dispatcher';
 export interface IRoom {
     name: string;
     id: string;
@@ -24,6 +24,7 @@ export declare abstract class Room extends EventDispatcher implements IRoom {
     objects: any[];
     enemies: Enemy[];
     doors: any[];
+    private enemyCounter;
     constructor(game: any, roomId: number, x: number, y: number, difficulty: number);
     readonly enemyTargetIds: string;
     readonly name: string;
@@ -33,5 +34,6 @@ export declare abstract class Room extends EventDispatcher implements IRoom {
     getEnemy(id: string): Character | null;
     endGame(): void;
     processEnemyTurn(): string;
+    protected addEnemy<T extends Enemy>(t: any): T;
     protected abstract generate(): void;
 }

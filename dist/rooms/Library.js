@@ -25,7 +25,7 @@ var Library = /** @class */ (function (_super) {
         configurable: true
     });
     Library.prototype.generate = function () {
-        this.enemies.push(new Goblin_1.Goblin(1, this.difficulty));
+        this.addEnemy(Goblin_1.Goblin);
     };
     return Library;
 }(Room_1.Room));

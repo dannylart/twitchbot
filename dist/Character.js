@@ -16,7 +16,7 @@ var Character = /** @class */ (function (_super) {
     function Character() {
         var _this = _super.call(this) || this;
         _this.health = 1000;
-        _this.maxHealth = 100;
+        _this.maxHealth = 1000;
         _this.mana = 50;
         _this.maxMana = 50;
         _this.strength = 10;

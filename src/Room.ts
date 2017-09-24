@@ -1,6 +1,6 @@
+import {EventDispatcher} from 'simple-ts-event-dispatcher';
 import {Character} from './Character';
 import {Enemy} from './Enemy';
-import {EventDispatcher} from 'simple-ts-event-dispatcher';
 import {Player} from './Player';
 
 export interface IRoom {
@@ -22,6 +22,7 @@ export abstract class Room extends EventDispatcher implements IRoom {
     public objects: any[];
     public enemies: Enemy[];
     public doors: any[];
+    private enemyCounter: number;
 
     constructor(
         public readonly game: any,
@@ -34,6 +35,7 @@ export abstract class Room extends EventDispatcher implements IRoom {
         this.enemies = [];
         this.objects = [];
         this.doors = [];
+        this.enemyCounter = 1;
         console.log(`Room with id ${this.id} created.`);
         this.generate();
     }
@@ -93,6 +95,15 @@ export abstract class Room extends EventDispatcher implements IRoom {
         }
 
         return results.join(' ');
+    }
+
+    protected addEnemy<T extends Enemy>(t: any): T {
+        const enemy: T = new t(this.enemyCounter, this.difficulty);
+        enemy.initialize();
+        this.enemies.push(enemy);
+        this.enemyCounter += 1;
+
+        return enemy;
     }
 
     protected abstract generate(): void;

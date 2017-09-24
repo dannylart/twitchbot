@@ -25,8 +25,7 @@ var Crypt = /** @class */ (function (_super) {
         configurable: true
     });
     Crypt.prototype.generate = function () {
-        var dragon = new Dragon_1.Dragon(1, this.difficulty);
-        this.enemies.push(dragon);
+        var dragon = this.addEnemy(Dragon_1.Dragon);
         dragon.once('death', this.endGame, this);
     };
     return Crypt;

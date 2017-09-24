@@ -16,12 +16,20 @@ var Dragon = /** @class */ (function (_super) {
     function Dragon() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.attributes = {
-            health: 100,
-            mana: 0,
-            strength: 10,
+            health: 1500,
+            mana: 100,
+            strength: 15,
             dexterity: 10,
             intelligence: 10,
-            luck: 3
+            luck: 10
+        };
+        _this.attributesPerLevel = {
+            health: 200,
+            mana: 20,
+            strength: 2.5,
+            dexterity: 2,
+            intelligence: 2,
+            luck: .5
         };
         return _this;
     }
