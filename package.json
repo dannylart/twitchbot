@@ -1,0 +1,51 @@
+{
+  "name": "battleforcorvus",
+  "version": "0.1.0",
+  "description": "A text based RPG game playable on Twitch.tv!",
+  "keywords": [
+    "typescript",
+    "rpg",
+    "twitch",
+    "game"
+  ],
+  "main": "./dist/bot.js",
+  "scripts": {
+    "prebuild": "rm -rf ./dist/",
+    "build": "tsc",
+    "clean": "rm -rf ./dist/",
+    "start": "node ./dist/bot.js",
+    "test": "karma start --single-run",
+    "posttest": "codecov",
+    "sample": "rm -rf sample/dist/ && tsc -p sample/ && node sample/dist/sample/index.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "jsonfile": "^4.0.0",
+    "simple-ts-event-dispatcher": "^0.1.2",
+    "simple-ts-message-list": "^0.1.1",
+    "simple-ts-models": "^0.1.2",
+    "socket.io-client": "^2.0.3"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^2.6.0",
+    "@types/node": "^8.0.30",
+    "@types/socket.io": "^1.4.30",
+    "@types/socket.io-client": "^1.4.30",
+    "codecov": "^2.3.0",
+    "jasmine": "^2.8.0",
+    "karma": "^1.5.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^1.1.0",
+    "karma-typescript": "^3.0.5",
+    "tslint": "^5.7.0",
+    "typescript": "^2.5.2"
+  },
+  "homepage": "https://github.com/malero/battleforcorvus",
+  "git": "https://github.com/malero/battleforcorvus",
+  "typings": "./dist/index.d.ts",
+  "author": "Malero <contact@maleero.com> (http://www.maleero.com/)",
+  "bugs": {
+    "url": "https://github.com/malero/battleforcorvus/issues",
+    "email": "contact@maleero.com"
+  }
+}
