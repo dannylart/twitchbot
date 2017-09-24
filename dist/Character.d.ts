@@ -15,9 +15,11 @@ export declare abstract class Character extends EventDispatcher implements IAttr
     readonly dead: boolean;
     readonly abstract name: string;
     readonly attackPower: number;
+    readonly spellPower: number;
     readonly attackDamage: number;
+    readonly spellDamage: number;
     readonly criticalHit: boolean;
     attack(e: Character): string;
-    hit(e: Character): string;
+    hit(attacker: Character, action?: string, multi?: number, melee?: boolean): string;
     protected die(): void;
 }

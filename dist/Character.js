@@ -41,10 +41,26 @@ var Character = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(Character.prototype, "spellPower", {
+        get: function () {
+            return (this.intelligence + this.buffs.attributes.intelligence) * 10;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(Character.prototype, "attackDamage", {
         get: function () {
             var min = this.attackPower * .75;
             var max = this.attackPower * 1.25;
+            return Math.floor(Math.random() * (max - min) + min);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Character.prototype, "spellDamage", {
+        get: function () {
+            var min = this.spellPower * .75;
+            var max = this.spellPower * 1.25;
             return Math.floor(Math.random() * (max - min) + min);
         },
         enumerable: true,
@@ -62,14 +78,18 @@ var Character = /** @class */ (function (_super) {
         result.push("" + e.hit(this));
         return result.join(' ');
     };
-    Character.prototype.hit = function (e) {
-        var damage = e.attackDamage;
-        var critical = e.criticalHit;
+    Character.prototype.hit = function (attacker, action, multi, melee) {
+        if (action === void 0) { action = 'attacked'; }
+        if (multi === void 0) { multi = 1; }
+        if (melee === void 0) { melee = true; }
+        var damage = melee ? attacker.attackDamage : attacker.spellDamage;
+        damage = Math.floor(damage * multi);
+        var critical = attacker.criticalHit;
         var hit = critical ? 'critically hit' : 'hit';
         if (critical)
-            damage *= 2;
+            damage = Math.floor(damage * 2);
         this.health -= damage;
-        var result = e.name + " attacked " + this.name + " and was " + hit + " for " + damage + " and has";
+        var result = attacker.name + " " + action + " " + this.name + " and was " + hit + " for " + damage + " and has";
         if (!this.dead) {
             return result + " " + this.health + " health remaining.";
         }

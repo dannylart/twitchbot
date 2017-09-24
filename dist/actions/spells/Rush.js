@@ -11,31 +11,32 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Action_1 = require("../../Action");
-var Buff_1 = require("../../Buff");
-var Focus = /** @class */ (function (_super) {
-    __extends(Focus, _super);
-    function Focus() {
+var Rush = /** @class */ (function (_super) {
+    __extends(Rush, _super);
+    function Rush() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Focus.prototype.process = function () {
+    Rush.prototype.process = function () {
         if (this.player.mana < 10)
             return {
                 message: "OOM!",
                 success: false
             };
-        var b = new Buff_1.Buff('Focus');
-        b.attributes.strength = 5 * this.player.level;
         this.player.mana -= 10;
-        b.expire(60 * 5);
-        this.player.buffs.add(b);
+        var enemy = this.game.room.getEnemy(this.parts[2]);
+        if (!enemy)
+            return {
+                message: "Invalid target.",
+                success: false
+            };
         return {
-            message: this.player.name + " cast Focus increasing their strength by " + b.attributes.strength + " for 5 minutes.",
+            message: enemy.hit(this.player, 'used rush on', 1.25),
             success: true
         };
     };
-    Focus.keyword = 'focus';
-    Focus.combat = true;
-    return Focus;
+    Rush.keyword = 'rush';
+    Rush.combat = true;
+    return Rush;
 }(Action_1.Action));
-exports.Focus = Focus;
-//# sourceMappingURL=Focus.js.map
+exports.Rush = Rush;
+//# sourceMappingURL=Rush.js.map

@@ -39,9 +39,20 @@ export abstract class Character extends EventDispatcher implements IAttributes {
         return (this.strength + this.buffs.attributes.strength) * 10;
     }
 
+    get spellPower(): number {
+        return (this.intelligence + this.buffs.attributes.intelligence) * 10;
+    }
+
     get attackDamage(): number {
         const min: number = this.attackPower * .75;
         const max: number = this.attackPower * 1.25;
+
+        return Math.floor(Math.random() * (max - min) + min);
+    }
+
+    get spellDamage(): number {
+        const min: number = this.spellPower * .75;
+        const max: number = this.spellPower * 1.25;
 
         return Math.floor(Math.random() * (max - min) + min);
     }
@@ -57,15 +68,16 @@ export abstract class Character extends EventDispatcher implements IAttributes {
         return result.join(' ');
     }
 
-    public hit(e: Character): string {
-        let damage: number = e.attackDamage;
-        const critical: boolean = e.criticalHit;
+    public hit(attacker: Character, action: string = 'attacked', multi: number = 1, melee: boolean = true): string {
+        let damage: number = melee ? attacker.attackDamage : attacker.spellDamage;
+        damage = Math.floor(damage * multi);
+        const critical: boolean = attacker.criticalHit;
         const hit: string = critical ? 'critically hit' : 'hit';
         if (critical)
-            damage *= 2;
+            damage = Math.floor(damage * 2);
 
         this.health -= damage;
-        const result: string = `${e.name} attacked ${this.name} and was ${hit} for ${damage} and has`;
+        const result: string = `${attacker.name} ${action} ${this.name} and was ${hit} for ${damage} and has`;
         if (!this.dead) {
             return `${result} ${this.health} health remaining.`;
         } else {

@@ -4,9 +4,9 @@ import {IAttributes} from '../IAttributes';
 export class Squire extends Class {
     public static keyword: string = 'squire';
     public attributes: IAttributes = {
-        health: 25,
+        health: 100,
         mana: 0,
-        strength: 1,
+        strength: 5,
         dexterity: 1,
         intelligence: 0,
         luck: 0

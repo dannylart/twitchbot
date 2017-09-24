@@ -1,8 +1,10 @@
 import {Action, IActionResult} from '../Action';
 import {Focus} from './spells/Focus';
+import {Rush} from './spells/Rush';
 
 const SPELLS: any[] = [];
 SPELLS.push(Focus);
+SPELLS.push(Rush);
 
 export class Cast extends Action {
     public static keyword: string = ':!cast';

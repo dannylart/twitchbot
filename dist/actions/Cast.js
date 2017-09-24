@@ -12,8 +12,10 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Action_1 = require("../Action");
 var Focus_1 = require("./spells/Focus");
+var Rush_1 = require("./spells/Rush");
 var SPELLS = [];
 SPELLS.push(Focus_1.Focus);
+SPELLS.push(Rush_1.Rush);
 var Cast = /** @class */ (function (_super) {
     __extends(Cast, _super);
     function Cast() {

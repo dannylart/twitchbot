@@ -7,7 +7,14 @@ export class Buff {
 
     constructor(id: string) {
         this.id = id;
-        this.attributes = {};
+        this.attributes = {
+            health: 0,
+            mana: 0,
+            strength: 0,
+            dexterity: 0,
+            intelligence: 0,
+            luck: 0
+        };
         this.expired = false;
     }
 
