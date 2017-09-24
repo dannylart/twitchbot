@@ -16,7 +16,7 @@ import {IRoom, Room} from './Room';
 import {Entrance} from './rooms/Entrance';
 import {Library} from './rooms/Library';
 import {Smithy} from './rooms/Smithy';
-import {Squire} from './classes/Squire';
+import {Fighter} from './classes/Fighter';
 import {Chemist} from './classes/Chemist';
 import {Craft} from './actions/Craft';
 import {Level} from './actions/Level';
@@ -313,6 +313,6 @@ Game.roomTypes.push(Library);
 Game.roomTypes.push(Smithy);
 
 Game.classes = [];
-Game.classes.push(Squire);
+Game.classes.push(Fighter);
 Game.classes.push(Chemist);
 Game.classes.push(Knight);

@@ -1,8 +1,8 @@
 import {Class} from '../Class';
 import {IAttributes} from '../IAttributes';
 
-export class Squire extends Class {
-    public static keyword: string = 'squire';
+export class Fighter extends Class {
+    public static keyword: string = 'fighter';
     public attributes: IAttributes = {
         health: 100,
         mana: 0,

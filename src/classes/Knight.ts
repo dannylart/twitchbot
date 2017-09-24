@@ -5,7 +5,7 @@ import {INumberStore} from '../IStore';
 export class Knight extends Class {
     public static keyword: string = 'knight';
     public static requirements: INumberStore = {
-        squire: 2
+        figther: 5
     };
 
     public attributes: IAttributes = {
