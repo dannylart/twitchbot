@@ -43,6 +43,9 @@ export class Player extends Character {
         this.luck += attrs.luck;
         this.save();
 
+        // Heal up the character
+        this.health = this.maxHealth;
+        this.mana = this.maxMana;
         return this.classes[cls];
     }
 
