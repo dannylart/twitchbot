@@ -2,6 +2,8 @@ import {Enemy} from '../Enemy';
 import {IAttributes} from '../IAttributes';
 
 export class Dragon extends Enemy {
+    public experienceForKill: number = 200;
+
     public attributes: IAttributes = {
         health: 1500,
         mana: 100,

@@ -15,6 +15,7 @@ var Wizard = /** @class */ (function (_super) {
     __extends(Wizard, _super);
     function Wizard() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.experienceForKill = 100;
         _this.attributes = {
             health: 400,
             mana: 50,

@@ -1,32 +1,37 @@
+import {EventDispatcher} from 'simple-ts-event-dispatcher';
 import {Action, IAction, IActionResult} from './Action';
 import {Attack} from './actions/Attack';
 import {Cast} from './actions/Cast';
+import {Craft} from './actions/Craft';
 import {EndTurn} from './actions/EndTurn';
 import {Examine} from './actions/Examine';
 import {Flee} from './actions/Flee';
 import {Go} from './actions/Go';
+import {Hide} from './actions/Hide';
 import {Inventory} from './actions/Inventory';
+import {Level} from './actions/Level';
 import {Loot} from './actions/Loot';
+import {Status} from './actions/Status';
 import {Take} from './actions/Take';
 import {Use} from './actions/Use';
 import {BattleForCorvusBot} from './bot';
 import {Class} from './Class';
+import {Artisan} from './classes/Artisan';
+import {Chemist} from './classes/Chemist';
+import {Cleric} from './classes/Cleric';
+import {Fighter} from './classes/Fighter';
+import {Knight} from './classes/Knight';
+import {Ranger} from './classes/Ranger';
+import {Rogue} from './classes/Rogue';
+import {Wizard} from './classes/Wizard';
 import {Player} from './Player';
 import {IRoom, Room} from './Room';
+import {Crypt} from './rooms/Crypt';
 import {Entrance} from './rooms/Entrance';
 import {Library} from './rooms/Library';
 import {Smithy} from './rooms/Smithy';
-import {Fighter} from './classes/Fighter';
-import {Chemist} from './classes/Chemist';
-import {Craft} from './actions/Craft';
-import {Level} from './actions/Level';
-import {Hide} from './actions/Hide';
-import {Crypt} from './rooms/Crypt';
-import {Knight} from './classes/Knight';
-import {EventDispatcher} from 'simple-ts-event-dispatcher';
-import {Status} from './actions/Status';
 
-const DIFFICULTIES: number[] = [1, 250, 500, 1000, 2000];
+const DIFFICULTIES: number[] = [1, 50, 200, 500, 1000];
 
 export class Game extends EventDispatcher {
     public static actions: typeof Action[];
@@ -250,7 +255,6 @@ export class Game extends EventDispatcher {
         return actions;
     }
 
-
     public generateRandomRoom(id: number, x: number, y: number): IRoom {
         const room: any = Game.roomTypes[Math.floor(Math.random() * Game.roomTypes.length)];
 
@@ -284,7 +288,7 @@ export class Game extends EventDispatcher {
         return classes;
     }
 
-    private loop() {
+    private loop(): void {
         if (this.gameOver) return;
         if (this.playersRemaining === 0) this.endGame();
         const p: Player | null = this.player;
@@ -313,6 +317,11 @@ Game.roomTypes.push(Library);
 Game.roomTypes.push(Smithy);
 
 Game.classes = [];
+Game.classes.push(Artisan);
 Game.classes.push(Fighter);
 Game.classes.push(Chemist);
+Game.classes.push(Cleric);
 Game.classes.push(Knight);
+Game.classes.push(Ranger);
+Game.classes.push(Rogue);
+Game.classes.push(Wizard);

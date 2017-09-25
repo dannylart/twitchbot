@@ -11,39 +11,36 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Class_1 = require("../Class");
-var Knight = /** @class */ (function (_super) {
-    __extends(Knight, _super);
-    function Knight() {
+var Cleric = /** @class */ (function (_super) {
+    __extends(Cleric, _super);
+    function Cleric() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.attributes = {
-            health: 50,
-            mana: 0,
-            strength: 3,
+            health: 40,
+            mana: 60,
+            strength: 0,
             dexterity: 0,
-            intelligence: 0,
+            intelligence: 6,
             luck: 0
         };
         _this.spells = [
-            'focus',
-            'rush',
-            'stone',
-            'salve',
-            'rend'
+            'heal',
+            '',
+            '',
+            '',
+            ''
         ];
         _this.recipes = [
-            'torch',
             '',
-            'campfire',
+            '',
+            '',
             '',
             ''
         ];
         return _this;
     }
-    Knight.keyword = 'knight';
-    Knight.requirements = {
-        figther: 5
-    };
-    return Knight;
+    Cleric.keyword = 'cleric';
+    return Cleric;
 }(Class_1.Class));
-exports.Knight = Knight;
-//# sourceMappingURL=Knight.js.map
+exports.Cleric = Cleric;
+//# sourceMappingURL=Cleric.js.map

@@ -5,7 +5,7 @@ export class Level extends Action {
     public static whisper: boolean = true;
 
     public process(): IActionResult {
-        const requirement: number = Math.floor((Math.log10(this.player.level + 1) + 1) * 500 * this.player.level + 100);
+        const requirement: number = Math.floor((Math.log10(this.player.level + 1) + 1) * 250 * this.player.level + 100);
         if (this.player.experience < requirement)
             return {
                 message: `Not enough experience to level. You have ${this.player.experience} experience of the ${requirement} needed.`,

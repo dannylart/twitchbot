@@ -11,15 +11,15 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Class_1 = require("../Class");
-var Knight = /** @class */ (function (_super) {
-    __extends(Knight, _super);
-    function Knight() {
+var Fighter = /** @class */ (function (_super) {
+    __extends(Fighter, _super);
+    function Fighter() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.attributes = {
-            health: 50,
+            health: 100,
             mana: 0,
-            strength: 3,
-            dexterity: 0,
+            strength: 5,
+            dexterity: 1,
             intelligence: 0,
             luck: 0
         };
@@ -39,11 +39,8 @@ var Knight = /** @class */ (function (_super) {
         ];
         return _this;
     }
-    Knight.keyword = 'knight';
-    Knight.requirements = {
-        figther: 5
-    };
-    return Knight;
+    Fighter.keyword = 'fighter';
+    return Fighter;
 }(Class_1.Class));
-exports.Knight = Knight;
-//# sourceMappingURL=Knight.js.map
+exports.Fighter = Fighter;
+//# sourceMappingURL=Fighter.js.map

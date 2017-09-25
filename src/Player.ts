@@ -4,6 +4,7 @@ import {IAttributes} from './IAttributes';
 import {INumberStore} from './IStore';
 
 export class Player extends Character {
+    public experienceForKill: number = 0;
     public readonly name: string;
     public classes: INumberStore;
     public inventory: INumberStore;

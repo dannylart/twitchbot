@@ -78,6 +78,9 @@ var Character = /** @class */ (function (_super) {
         result.push("" + e.hit(this));
         return result.join(' ');
     };
+    Character.prototype.getExperienceForKill = function () {
+        return this.level * this.experienceForKill;
+    };
     Character.prototype.hit = function (attacker, action, multi, melee) {
         if (action === void 0) { action = 'attacked'; }
         if (multi === void 0) { multi = 1; }

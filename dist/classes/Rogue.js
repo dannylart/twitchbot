@@ -11,36 +11,36 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Class_1 = require("../Class");
-var Squire = /** @class */ (function (_super) {
-    __extends(Squire, _super);
-    function Squire() {
+var Rogue = /** @class */ (function (_super) {
+    __extends(Rogue, _super);
+    function Rogue() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.attributes = {
-            health: 25,
-            mana: 0,
-            strength: 1,
-            dexterity: 1,
-            intelligence: 0,
-            luck: 0
+            health: 40,
+            mana: 20,
+            strength: 5,
+            dexterity: 5,
+            intelligence: 1,
+            luck: 3
         };
         _this.spells = [
-            'focus',
-            'rush',
-            'stone',
-            'salve',
-            'rend'
+            'doublestrike',
+            'sap',
+            'fanofknives',
+            'cloakofshadows',
+            ''
         ];
         _this.recipes = [
-            'torch',
             '',
-            'campfire',
+            '',
+            '',
             '',
             ''
         ];
         return _this;
     }
-    Squire.keyword = 'squire';
-    return Squire;
+    Rogue.keyword = 'rogue';
+    return Rogue;
 }(Class_1.Class));
-exports.Squire = Squire;
-//# sourceMappingURL=Squire.js.map
+exports.Rogue = Rogue;
+//# sourceMappingURL=Rogue.js.map

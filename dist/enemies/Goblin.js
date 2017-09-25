@@ -15,6 +15,7 @@ var Goblin = /** @class */ (function (_super) {
     __extends(Goblin, _super);
     function Goblin() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.experienceForKill = 40;
         _this.attributes = {
             health: 100,
             mana: 0,

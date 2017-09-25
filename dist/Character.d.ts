@@ -10,6 +10,8 @@ export declare abstract class Character extends EventDispatcher implements IAttr
     dexterity: number;
     intelligence: number;
     luck: number;
+    abstract level: number;
+    abstract experienceForKill: number;
     buffs: BuffManager;
     constructor();
     readonly dead: boolean;
@@ -20,6 +22,7 @@ export declare abstract class Character extends EventDispatcher implements IAttr
     readonly spellDamage: number;
     readonly criticalHit: boolean;
     attack(e: Character): string;
+    getExperienceForKill(): number;
     hit(attacker: Character, action?: string, multi?: number, melee?: boolean): string;
     protected die(): void;
 }

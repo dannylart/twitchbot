@@ -2,6 +2,8 @@ import {Enemy} from '../Enemy';
 import {IAttributes} from '../IAttributes';
 
 export class Goblin extends Enemy {
+    public experienceForKill: number = 40;
+
     public attributes: IAttributes = {
         health: 100,
         mana: 0,

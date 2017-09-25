@@ -1,6 +1,6 @@
 import { Class } from '../Class';
 import { IAttributes } from '../IAttributes';
-export declare class Squire extends Class {
+export declare class Artisan extends Class {
     static keyword: string;
     attributes: IAttributes;
     spells: string[];

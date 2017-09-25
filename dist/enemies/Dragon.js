@@ -15,6 +15,7 @@ var Dragon = /** @class */ (function (_super) {
     __extends(Dragon, _super);
     function Dragon() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.experienceForKill = 200;
         _this.attributes = {
             health: 1500,
             mana: 100,

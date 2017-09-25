@@ -14,6 +14,9 @@ export abstract class Character extends EventDispatcher implements IAttributes {
     public intelligence: number; // spell power
     public luck: number; // crit & other misc.
 
+    public abstract level: number;
+    public abstract experienceForKill: number;
+
     public buffs: BuffManager;
 
     constructor() {
@@ -66,6 +69,10 @@ export abstract class Character extends EventDispatcher implements IAttributes {
         result.push(`${e.hit(this)}`);
 
         return result.join(' ');
+    }
+
+    public getExperienceForKill(): number {
+        return this.level * this.experienceForKill;
     }
 
     public hit(attacker: Character, action: string = 'attacked', multi: number = 1, melee: boolean = true): string {

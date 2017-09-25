@@ -10,12 +10,8 @@ export class Attack extends Action {
             const e: Character | null = this.game.room.getEnemy(this.parts[1]);
             if (e) {
                 let r: string = this.player.attack(e);
-                if (e.dead) {
-                    const experience: number = 100;
-                    for (const player of this.game.players)
-                        player.addExperience(experience);
-                    r += `The party has gained ${experience} experience.`;
-                }
+                if (e.dead)
+                    r += this.addPartyExperience(e.getExperienceForKill());
 
                 return {
                     message: r,

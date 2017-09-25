@@ -16,4 +16,5 @@ export declare abstract class Action implements IAction {
     static whisper: boolean;
     constructor(game: Game, player: Player, parts: string[]);
     abstract process(): IActionResult;
+    protected addPartyExperience(experience: number): string;
 }

@@ -11,39 +11,36 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Class_1 = require("../Class");
-var Knight = /** @class */ (function (_super) {
-    __extends(Knight, _super);
-    function Knight() {
+var Ranger = /** @class */ (function (_super) {
+    __extends(Ranger, _super);
+    function Ranger() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.attributes = {
-            health: 50,
-            mana: 0,
-            strength: 3,
-            dexterity: 0,
+            health: 60,
+            mana: 40,
+            strength: 0,
+            dexterity: 5,
             intelligence: 0,
-            luck: 0
+            luck: 1
         };
         _this.spells = [
-            'focus',
-            'rush',
-            'stone',
-            'salve',
-            'rend'
+            'multishot',
+            '',
+            '',
+            '',
+            'snipe'
         ];
         _this.recipes = [
-            'torch',
             '',
-            'campfire',
+            '',
+            '',
             '',
             ''
         ];
         return _this;
     }
-    Knight.keyword = 'knight';
-    Knight.requirements = {
-        figther: 5
-    };
-    return Knight;
+    Ranger.keyword = 'ranger';
+    return Ranger;
 }(Class_1.Class));
-exports.Knight = Knight;
-//# sourceMappingURL=Knight.js.map
+exports.Ranger = Ranger;
+//# sourceMappingURL=Ranger.js.map

@@ -12,7 +12,6 @@ export interface IEnemy extends IAttributes {
 
 export abstract class Enemy extends Character implements IEnemy {
     public abstract attributes: IAttributes;
-
     public abstract attributesPerLevel: IAttributes;
 
     constructor(

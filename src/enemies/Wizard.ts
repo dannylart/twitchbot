@@ -2,6 +2,8 @@ import {Enemy} from '../Enemy';
 import {IAttributes} from '../IAttributes';
 
 export class Wizard extends Enemy {
+    public experienceForKill: number = 100;
+
     public attributes: IAttributes = {
         health: 400,
         mana: 50,

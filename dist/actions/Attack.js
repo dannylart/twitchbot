@@ -21,14 +21,8 @@ var Attack = /** @class */ (function (_super) {
             var e = this.game.room.getEnemy(this.parts[1]);
             if (e) {
                 var r = this.player.attack(e);
-                if (e.dead) {
-                    var experience = 100;
-                    for (var _i = 0, _a = this.game.players; _i < _a.length; _i++) {
-                        var player = _a[_i];
-                        player.addExperience(experience);
-                    }
-                    r += "The party has gained " + experience + " experience.";
-                }
+                if (e.dead)
+                    r += this.addPartyExperience(e.getExperienceForKill());
                 return {
                     message: r,
                     success: true

@@ -16,6 +16,7 @@ var Player = /** @class */ (function (_super) {
     __extends(Player, _super);
     function Player(name) {
         var _this = _super.call(this) || this;
+        _this.experienceForKill = 0;
         _this.name = name;
         _this.inventory = {};
         _this.classes = {};

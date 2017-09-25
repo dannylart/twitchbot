@@ -24,6 +24,13 @@ var Entrance = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(Entrance.prototype, "description", {
+        get: function () {
+            return '';
+        },
+        enumerable: true,
+        configurable: true
+    });
     Entrance.prototype.generate = function () {
         var count = 2 + Math.floor(this.difficulty / 5);
         for (var i = 1; i <= count; i++)

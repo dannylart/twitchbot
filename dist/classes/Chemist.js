@@ -40,6 +40,9 @@ var Chemist = /** @class */ (function (_super) {
         return _this;
     }
     Chemist.keyword = 'chemist';
+    Chemist.requirements = {
+        artisan: 2
+    };
     return Chemist;
 }(Class_1.Class));
 exports.Chemist = Chemist;

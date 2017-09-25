@@ -17,7 +17,7 @@ var Level = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Level.prototype.process = function () {
-        var requirement = Math.floor((Math.log10(this.player.level + 1) + 1) * 500 * this.player.level + 100);
+        var requirement = Math.floor((Math.log10(this.player.level + 1) + 1) * 250 * this.player.level + 100);
         if (this.player.experience < requirement)
             return {
                 message: "Not enough experience to level. You have " + this.player.experience + " experience of the " + requirement + " needed.",
