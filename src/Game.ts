@@ -269,14 +269,20 @@ export class Game extends EventDispatcher {
         return null;
     }
 
-    public playerHasSpell(player: Player, spellName: string): boolean {
+    public getPlayerSpells(player: Player): string[] {
+        const spells: string[] = [];
+
         for (const cls in player.classes) {
             const c: Class | null = this.getClass(cls, player.classes[cls]);
-            if (c && c.getClassSpells().indexOf(spellName) > -1)
-                return true;
+            if (c)
+                spells.push(...c.getClassSpells());
         }
 
-        return false;
+        return spells;
+    }
+
+    public playerHasSpell(player: Player, spellName: string): boolean {
+        return this.getPlayerSpells(player).indexOf(spellName) > -1;
     }
 
     public getAvailableClasses(p: Player): string[] {

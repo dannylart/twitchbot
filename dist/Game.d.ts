@@ -1,9 +1,9 @@
+import { EventDispatcher } from 'simple-ts-event-dispatcher';
 import { Action } from './Action';
 import { BattleForCorvusBot } from './bot';
 import { Class } from './Class';
 import { Player } from './Player';
 import { IRoom, Room } from './Room';
-import { EventDispatcher } from 'simple-ts-event-dispatcher';
 export declare class Game extends EventDispatcher {
     static actions: typeof Action[];
     static roomTypes: typeof Room[];
@@ -38,6 +38,7 @@ export declare class Game extends EventDispatcher {
     getWhisperActions(): string[];
     generateRandomRoom(id: number, x: number, y: number): IRoom;
     getClass(cls: string, level: number): Class | null;
+    getPlayerSpells(player: Player): string[];
     playerHasSpell(player: Player, spellName: string): boolean;
     getAvailableClasses(p: Player): string[];
     private loop();

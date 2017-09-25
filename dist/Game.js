@@ -10,35 +10,35 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var simple_ts_event_dispatcher_1 = require("simple-ts-event-dispatcher");
 var Attack_1 = require("./actions/Attack");
 var Cast_1 = require("./actions/Cast");
+var Craft_1 = require("./actions/Craft");
 var EndTurn_1 = require("./actions/EndTurn");
 var Examine_1 = require("./actions/Examine");
 var Flee_1 = require("./actions/Flee");
 var Go_1 = require("./actions/Go");
+var Hide_1 = require("./actions/Hide");
 var Inventory_1 = require("./actions/Inventory");
+var Level_1 = require("./actions/Level");
 var Loot_1 = require("./actions/Loot");
+var Status_1 = require("./actions/Status");
 var Take_1 = require("./actions/Take");
 var Use_1 = require("./actions/Use");
-var Player_1 = require("./Player");
-var Entrance_1 = require("./rooms/Entrance");
-var Library_1 = require("./rooms/Library");
-var Smithy_1 = require("./rooms/Smithy");
-var Fighter_1 = require("./classes/Fighter");
-var Chemist_1 = require("./classes/Chemist");
-var Craft_1 = require("./actions/Craft");
-var Level_1 = require("./actions/Level");
-var Hide_1 = require("./actions/Hide");
-var Crypt_1 = require("./rooms/Crypt");
-var Knight_1 = require("./classes/Knight");
-var simple_ts_event_dispatcher_1 = require("simple-ts-event-dispatcher");
-var Status_1 = require("./actions/Status");
 var Artisan_1 = require("./classes/Artisan");
+var Chemist_1 = require("./classes/Chemist");
 var Cleric_1 = require("./classes/Cleric");
+var Fighter_1 = require("./classes/Fighter");
+var Knight_1 = require("./classes/Knight");
 var Ranger_1 = require("./classes/Ranger");
 var Rogue_1 = require("./classes/Rogue");
 var Wizard_1 = require("./classes/Wizard");
-var DIFFICULTIES = [1, 250, 500, 1000, 2000];
+var Player_1 = require("./Player");
+var Crypt_1 = require("./rooms/Crypt");
+var Entrance_1 = require("./rooms/Entrance");
+var Library_1 = require("./rooms/Library");
+var Smithy_1 = require("./rooms/Smithy");
+var DIFFICULTIES = [1, 50, 200, 500, 1000];
 var Game = /** @class */ (function (_super) {
     __extends(Game, _super);
     function Game(bot, particpants, difficulty) {
@@ -268,13 +268,17 @@ var Game = /** @class */ (function (_super) {
         }
         return null;
     };
-    Game.prototype.playerHasSpell = function (player, spellName) {
+    Game.prototype.getPlayerSpells = function (player) {
+        var spells = [];
         for (var cls in player.classes) {
             var c = this.getClass(cls, player.classes[cls]);
-            if (c && c.getClassSpells().indexOf(spellName) > -1)
-                return true;
+            if (c)
+                spells.push.apply(spells, c.getClassSpells());
         }
-        return false;
+        return spells;
+    };
+    Game.prototype.playerHasSpell = function (player, spellName) {
+        return this.getPlayerSpells(player).indexOf(spellName) > -1;
     };
     Game.prototype.getAvailableClasses = function (p) {
         var classes = [];

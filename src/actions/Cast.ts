@@ -11,6 +11,13 @@ export class Cast extends Action {
     public static combat: boolean = true;
 
     public process(): IActionResult {
+        if (!this.parts[1]) {
+            return {
+                message: `You can cast the following spells: ${this.game.getPlayerSpells(this.player).join(', ')}`,
+                success: false
+            };
+        }
+
         if (!this.game.playerHasSpell(this.player, this.parts[1])) {
             return {
                 message: `You cannot cast ${this.parts[1]}.`,

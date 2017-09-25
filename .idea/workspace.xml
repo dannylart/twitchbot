@@ -2,53 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="23186e34-fe85-4ffd-b9bf-af48e499b65e" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/classes/Squire.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/classes/Squire.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/classes/Squire.js.map" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/Action.d.ts" afterPath="$PROJECT_DIR$/dist/Action.d.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/Action.js" afterPath="$PROJECT_DIR$/dist/Action.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/Action.js.map" afterPath="$PROJECT_DIR$/dist/Action.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/Character.d.ts" afterPath="$PROJECT_DIR$/dist/Character.d.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/Character.js" afterPath="$PROJECT_DIR$/dist/Character.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/Character.js.map" afterPath="$PROJECT_DIR$/dist/Character.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/Enemy.js.map" afterPath="$PROJECT_DIR$/dist/Enemy.js.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/Game.d.ts" afterPath="$PROJECT_DIR$/dist/Game.d.ts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/Game.js" afterPath="$PROJECT_DIR$/dist/Game.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/Game.js.map" afterPath="$PROJECT_DIR$/dist/Game.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/Player.d.ts" afterPath="$PROJECT_DIR$/dist/Player.d.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/Player.js" afterPath="$PROJECT_DIR$/dist/Player.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/Player.js.map" afterPath="$PROJECT_DIR$/dist/Player.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/actions/Attack.js" afterPath="$PROJECT_DIR$/dist/actions/Attack.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/actions/Attack.js.map" afterPath="$PROJECT_DIR$/dist/actions/Attack.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/actions/Level.js" afterPath="$PROJECT_DIR$/dist/actions/Level.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/classes/Chemist.d.ts" afterPath="$PROJECT_DIR$/dist/classes/Chemist.d.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/classes/Chemist.js" afterPath="$PROJECT_DIR$/dist/classes/Chemist.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/classes/Chemist.js.map" afterPath="$PROJECT_DIR$/dist/classes/Chemist.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/classes/Knight.js" afterPath="$PROJECT_DIR$/dist/classes/Knight.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/classes/Knight.js.map" afterPath="$PROJECT_DIR$/dist/classes/Knight.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/enemies/Dragon.d.ts" afterPath="$PROJECT_DIR$/dist/enemies/Dragon.d.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/enemies/Dragon.js" afterPath="$PROJECT_DIR$/dist/enemies/Dragon.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/enemies/Dragon.js.map" afterPath="$PROJECT_DIR$/dist/enemies/Dragon.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/enemies/Goblin.d.ts" afterPath="$PROJECT_DIR$/dist/enemies/Goblin.d.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/enemies/Goblin.js" afterPath="$PROJECT_DIR$/dist/enemies/Goblin.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/enemies/Goblin.js.map" afterPath="$PROJECT_DIR$/dist/enemies/Goblin.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/enemies/Wizard.d.ts" afterPath="$PROJECT_DIR$/dist/enemies/Wizard.d.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/enemies/Wizard.js" afterPath="$PROJECT_DIR$/dist/enemies/Wizard.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/enemies/Wizard.js.map" afterPath="$PROJECT_DIR$/dist/enemies/Wizard.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/rooms/Entrance.d.ts" afterPath="$PROJECT_DIR$/dist/rooms/Entrance.d.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/rooms/Entrance.js" afterPath="$PROJECT_DIR$/dist/rooms/Entrance.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/rooms/Entrance.js.map" afterPath="$PROJECT_DIR$/dist/rooms/Entrance.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Action.ts" afterPath="$PROJECT_DIR$/src/Action.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Character.ts" afterPath="$PROJECT_DIR$/src/Character.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Enemy.ts" afterPath="$PROJECT_DIR$/src/Enemy.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/actions/Cast.js" afterPath="$PROJECT_DIR$/dist/actions/Cast.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/actions/Cast.js.map" afterPath="$PROJECT_DIR$/dist/actions/Cast.js.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Game.ts" afterPath="$PROJECT_DIR$/src/Game.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Player.ts" afterPath="$PROJECT_DIR$/src/Player.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/actions/Attack.ts" afterPath="$PROJECT_DIR$/src/actions/Attack.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/actions/Level.ts" afterPath="$PROJECT_DIR$/src/actions/Level.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/enemies/Dragon.ts" afterPath="$PROJECT_DIR$/src/enemies/Dragon.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/enemies/Goblin.ts" afterPath="$PROJECT_DIR$/src/enemies/Goblin.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/enemies/Wizard.ts" afterPath="$PROJECT_DIR$/src/enemies/Wizard.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/rooms/Entrance.ts" afterPath="$PROJECT_DIR$/src/rooms/Entrance.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/actions/Cast.ts" afterPath="$PROJECT_DIR$/src/actions/Cast.ts" />
     </list>
     <ignored path="$PROJECT_DIR$/.idea/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -60,11 +20,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Attack.ts" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/actions/Attack.ts">
+      <file leaf-file-name="Cast.ts" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/actions/Cast.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="495">
-              <caret line="34" column="96" lean-forward="false" selection-start-line="34" selection-start-column="96" selection-end-line="34" selection-end-column="96" />
+            <state relative-caret-position="225">
+              <caret line="15" column="110" lean-forward="false" selection-start-line="15" selection-start-column="110" selection-end-line="15" selection-end-column="110" />
               <folding>
                 <element signature="e#0#48#0" expanded="true" />
               </folding>
@@ -72,95 +32,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Dragon.ts" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/enemies/Dragon.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="4" lean-forward="false" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="43" />
-              <folding>
-                <element signature="e#0#31#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Goblin.ts" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/enemies/Goblin.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="41" lean-forward="false" selection-start-line="4" selection-start-column="41" selection-end-line="4" selection-end-column="41" />
-              <folding>
-                <element signature="e#0#31#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Player.ts" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Player.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="39" lean-forward="false" selection-start-line="6" selection-start-column="39" selection-end-line="6" selection-end-column="39" />
-              <folding>
-                <element signature="e#0#37#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Wizard.ts" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/classes/Wizard.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#31#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Game.ts" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Game.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Game.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="326">
-              <caret line="33" column="53" lean-forward="false" selection-start-line="33" selection-start-column="53" selection-end-line="33" selection-end-column="53" />
-              <folding>
-                <element signature="e#0#59#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Knight.ts" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/classes/Knight.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="4" lean-forward="false" selection-start-line="6" selection-start-column="4" selection-end-line="8" selection-end-column="6" />
-              <folding>
-                <element signature="e#0#31#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Enemy.ts" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Enemy.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="2" lean-forward="false" selection-start-line="5" selection-start-column="2" selection-end-line="5" selection-end-column="18" />
-              <folding>
-                <element signature="e#0#38#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Character.ts" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Character.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="529">
-              <caret line="73" column="31" lean-forward="false" selection-start-line="73" selection-start-column="31" selection-end-line="73" selection-end-column="31" />
+            <state relative-caret-position="512">
+              <caret line="284" column="42" lean-forward="false" selection-start-line="284" selection-start-column="42" selection-end-line="284" selection-end-column="42" />
               <folding>
                 <element signature="e#0#59#0" expanded="true" />
               </folding>
@@ -217,7 +93,6 @@
         <option value="$PROJECT_DIR$/src/Buff.ts" />
         <option value="$PROJECT_DIR$/src/actions/spells/Focus.ts" />
         <option value="$PROJECT_DIR$/src/actions/spells/Rush.ts" />
-        <option value="$PROJECT_DIR$/src/actions/Cast.ts" />
         <option value="$PROJECT_DIR$/src/classes/Squire.ts" />
         <option value="$PROJECT_DIR$/src/classes/Fighter.ts" />
         <option value="$PROJECT_DIR$/src/classes/Knight.ts" />
@@ -241,6 +116,7 @@
         <option value="$PROJECT_DIR$/src/enemies/Wizard.ts" />
         <option value="$PROJECT_DIR$/src/Player.ts" />
         <option value="$PROJECT_DIR$/src/Game.ts" />
+        <option value="$PROJECT_DIR$/src/actions/Cast.ts" />
       </list>
     </option>
   </component>
@@ -713,16 +589,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/actions/Cast.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="9" lean-forward="false" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
-          <folding>
-            <element signature="e#0#48#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/actions/spells/Focus.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -929,10 +795,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Game.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="326">
-          <caret line="33" column="53" lean-forward="false" selection-start-line="33" selection-start-column="53" selection-end-line="33" selection-end-column="53" />
+        <state relative-caret-position="512">
+          <caret line="284" column="42" lean-forward="false" selection-start-line="284" selection-start-column="42" selection-end-line="284" selection-end-column="42" />
           <folding>
             <element signature="e#0#59#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/actions/Cast.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="110" lean-forward="false" selection-start-line="15" selection-start-column="110" selection-end-line="15" selection-end-column="110" />
+          <folding>
+            <element signature="e#0#48#0" expanded="true" />
           </folding>
         </state>
       </provider>
