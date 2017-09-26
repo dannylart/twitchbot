@@ -17,13 +17,13 @@ var Status = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Status.prototype.process = function () {
-        var attributes = "L" + this.player.level + " " + this.player.name + ": HP: " + this.player.health + "/" + this.player.maxHealth + ", str: " + this.player.strength + ", dex: " + this.player.dexterity + ", int: " + this.player.intelligence + ", luck: " + this.player.luck + ".";
+        var attributes = "L" + this.player.level + " " + this.player.name + ": HP: " + this.player.health + "/" + this.player.maxHealth + ", str: " + this.player.strength + ", dex: " + this.player.dexterity + ", int: " + this.player.intelligence + ", luck: " + this.player.luck + ",";
         var classes = [];
         for (var c in this.player.classes) {
             classes.push("L" + this.player.classes[c] + " " + c);
         }
         return {
-            message: attributes + " Classes: " + classes.join(', '),
+            message: attributes + " " + this.player.experience + " experience. Classes: " + classes.join(', '),
             success: true
         };
     };
