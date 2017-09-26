@@ -1,9 +1,9 @@
 import * as envData from '../env.json';
+import {IAction, IActionResult} from './Action';
 import {Game} from './Game';
 import {IEnvironment} from './IEnvironment';
-import {SocketClient} from './SocketClient';
-import {IAction, IActionResult} from './Action';
 import {Player} from './Player';
+import {SocketClient} from './SocketClient';
 
 type UserName = string | null;
 type Message = string | undefined;
@@ -191,10 +191,10 @@ export class BattleForCorvusBot extends SocketClient {
         const playersRemaining: number = this.game.playersRemaining;
         this.sendMessage('The game has ended!');
         if (playersRemaining > 0) {
-            const amount = Math.floor(this.game.difficulty / playersRemaining);
+            const amount: number = Math.floor(this.game.difficulty / playersRemaining);
             for (const player of this.game.players) {
                 if (!player.dead)
-                    this.sendMessage(`!give ${player.name} ${amount}`);
+                    player.addGold(amount);
                 }
         }
         this.game = null;

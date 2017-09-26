@@ -7,6 +7,7 @@ export declare class Player extends Character {
     readonly name: string;
     classes: INumberStore;
     inventory: INumberStore;
+    gold: number;
     experience: number;
     constructor(name: string);
     addExperience(xp: number): void;

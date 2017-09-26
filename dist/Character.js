@@ -92,7 +92,7 @@ var Character = /** @class */ (function (_super) {
         if (critical)
             damage = Math.floor(damage * 2);
         this.health -= damage;
-        var result = attacker.name + " " + action + " " + this.name + " and was " + hit + " for " + damage + " and has";
+        var result = attacker.name + " " + action + " " + this.name + " and " + hit + " for " + damage + ". " + this.name + " has";
         if (!this.dead) {
             return result + " " + this.health + " health remaining.";
         }

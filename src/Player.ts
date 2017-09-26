@@ -11,6 +11,7 @@ export class Player extends Character {
     public readonly name: string;
     public classes: INumberStore;
     public inventory: INumberStore;
+    public gold: number;
     public experience: number;
 
     constructor(name: string) {
@@ -20,6 +21,11 @@ export class Player extends Character {
         this.classes = {};
         this.loaded = false;
         this.open();
+    }
+
+    public addGold(gold: number): void {
+        this.gold += gold;
+        this.save();
     }
 
     public addExperience(xp: number): void {
@@ -87,6 +93,7 @@ export class Player extends Character {
     private open(): void {
         jsonfile.readFile(this.fileName(), (err: string, obj: any) => {
             if (!err) {
+                this.gold = obj.gold || 0;
                 this.experience = obj.experience || 0;
                 this.health = this.maxHealth = obj.health || 100;
                 this.mana = this.maxMana = obj.mana || 50;
@@ -98,6 +105,7 @@ export class Player extends Character {
                 this.inventory = obj.inventory || {};
                 this.classes = obj.classes || {};
             } else {
+                this.gold = 0;
                 this.experience = 0;
                 this.inventory = {};
                 this.classes = {};

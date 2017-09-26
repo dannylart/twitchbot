@@ -84,6 +84,7 @@ var Player = /** @class */ (function (_super) {
         var _this = this;
         jsonfile.readFile(this.fileName(), function (err, obj) {
             if (!err) {
+                _this.gold = obj.gold || 0;
                 _this.experience = obj.experience || 0;
                 _this.health = _this.maxHealth = obj.health || 100;
                 _this.mana = _this.maxMana = obj.mana || 50;
@@ -95,6 +96,7 @@ var Player = /** @class */ (function (_super) {
                 _this.classes = obj.classes || {};
             }
             else {
+                _this.gold = 0;
                 _this.experience = 0;
                 _this.inventory = {};
                 _this.classes = {};
