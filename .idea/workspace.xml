@@ -2,21 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="23186e34-fe85-4ffd-b9bf-af48e499b65e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ClassManager.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/Game.d.ts" afterPath="$PROJECT_DIR$/dist/Game.d.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/Game.js" afterPath="$PROJECT_DIR$/dist/Game.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/Game.js.map" afterPath="$PROJECT_DIR$/dist/Game.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/Player.d.ts" afterPath="$PROJECT_DIR$/dist/Player.d.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/Player.js" afterPath="$PROJECT_DIR$/dist/Player.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/Player.js.map" afterPath="$PROJECT_DIR$/dist/Player.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/actions/Cast.js" afterPath="$PROJECT_DIR$/dist/actions/Cast.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/actions/Cast.js.map" afterPath="$PROJECT_DIR$/dist/actions/Cast.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/actions/Level.js" afterPath="$PROJECT_DIR$/dist/actions/Level.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/actions/Level.js.map" afterPath="$PROJECT_DIR$/dist/actions/Level.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Game.ts" afterPath="$PROJECT_DIR$/src/Game.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Player.ts" afterPath="$PROJECT_DIR$/src/Player.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/actions/Cast.ts" afterPath="$PROJECT_DIR$/src/actions/Cast.ts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/actions/Level.ts" afterPath="$PROJECT_DIR$/src/actions/Level.ts" />
     </list>
     <ignored path="$PROJECT_DIR$/.idea/" />
@@ -80,8 +65,8 @@
       <file leaf-file-name="Level.ts" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/actions/Level.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="52" lean-forward="false" selection-start-line="15" selection-start-column="52" selection-end-line="15" selection-end-column="52" />
+            <state relative-caret-position="210">
+              <caret line="14" column="0" lean-forward="true" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
               <folding>
                 <element signature="e#0#48#0" expanded="true" />
               </folding>
@@ -160,8 +145,8 @@
         <option value="$PROJECT_DIR$/src/ClassManager.ts" />
         <option value="$PROJECT_DIR$/src/Game.ts" />
         <option value="$PROJECT_DIR$/src/actions/Cast.ts" />
-        <option value="$PROJECT_DIR$/src/actions/Level.ts" />
         <option value="$PROJECT_DIR$/src/Player.ts" />
+        <option value="$PROJECT_DIR$/src/actions/Level.ts" />
       </list>
     </option>
   </component>
@@ -829,8 +814,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/actions/Level.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="52" lean-forward="false" selection-start-line="15" selection-start-column="52" selection-end-line="15" selection-end-column="52" />
+        <state relative-caret-position="210">
+          <caret line="14" column="0" lean-forward="true" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
           <folding>
             <element signature="e#0#48#0" expanded="true" />
           </folding>

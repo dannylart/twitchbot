@@ -13,9 +13,9 @@ export class Level extends Action {
                 success: false
             };
 
-        const availble: string[] = this.player.getAvailableClasses();
+        const available: string[] = this.player.getAvailableClasses();
         if (this.parts.length > 1) {
-            if (availble.indexOf(this.parts[1]) > -1) {
+            if (available.indexOf(this.parts[1]) > -1) {
                 const cls: any = ClassManager.getClass(this.parts[1], 1);
                 this.player.experience -= requirement;
                 const lvl: number = this.player.levelUp(this.parts[1], cls.getBaseClassAttributes());
@@ -32,7 +32,7 @@ export class Level extends Action {
             };
         } else {
             return {
-                message: `The following can be leveled: ${availble.join(', ')}`,
+                message: `The following can be leveled: ${available.join(', ')}`,
                 success: false
             };
         }
