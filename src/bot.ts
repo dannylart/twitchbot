@@ -2,6 +2,8 @@ import * as envData from '../env.json';
 import {Game} from './Game';
 import {IEnvironment} from './IEnvironment';
 import {SocketClient} from './SocketClient';
+import {IAction, IActionResult} from './Action';
+import {Player} from './Player';
 
 type UserName = string | null;
 type Message = string | undefined;
@@ -34,6 +36,50 @@ export class BattleForCorvusBot extends SocketClient {
         this.messageQueue.push(message as string);
         if (this.canSendMessage)
             this.processMessageQueue();
+    }
+
+    public processAction(player: string, message: string): void {
+        if (!this.game) return;
+        if (this.game.player === null) return;
+        if (this.game.player.name !== player || this.game.paused)
+            return;
+
+        const parts: string[] = message.trim().split(' ');
+        const hasEnemies: boolean = this.game.room.hasEnemies;
+        console.log(parts);
+        for (const a of Game.actions) {
+            if (a.keyword === parts[0] && a.combat === hasEnemies) {
+                const action: IAction = new (a as any)(this, this.game.player, parts);
+                const result: IActionResult = action.process();
+                if (result.message)
+                    this.sendMessage(result.message);
+
+                // Can only use one action when there are enemies
+                if (hasEnemies && result.success)
+                    this.game.endTurn();
+            } else if (a.keyword === parts[0] && a.combat !== hasEnemies) {
+                this.sendMessage(`Currently cannot use ${parts[0].substr(1)}. Available commands: ${this.game.getActions().join(', ')}`);
+            }
+        }
+    }
+
+    public processWhisperedAction(playerName: string, message: string): void {
+        const game: Game = this.game || new Game(this, [playerName], 0);
+        const player: Player | null = game.getPlayer(playerName);
+        if (player === null) return;
+
+        const parts: string[] = message.trim().split(' ');
+        console.log(parts);
+        for (const a of Game.actions) {
+            if (a.keyword === parts[0] && a.whisper) {
+                const action: IAction = new (a as any)(game, player, parts);
+                const result: IActionResult = action.process();
+                if (result.message)
+                    this.sendMessage(`/w ${playerName} ${result.message}`);
+            } else if (a.keyword === parts[0] && !a.whisper) {
+                this.sendMessage(`/w ${playerName} Currently cannot use ${parts[0].substr(1)}. Available whisper commands: ${game.getWhisperActions().join(', ')}`);
+            }
+        }
     }
 
     private processMessageQueue(): void {
@@ -81,12 +127,12 @@ export class BattleForCorvusBot extends SocketClient {
             const channel: Message = line.shift();
             const message: Message = line.splice(0).join(' ');
             this.onMessage(username, channel, message);
-        } else if (this.game && line[1] === 'WHISPER') {
+        } else if (line[1] === 'WHISPER') {
             const info: Message = line.shift();
             const action: Message = line.shift();
             const channel: Message = line.shift();
             const message: Message = line.splice(0).join(' ');
-            this.game.processWhisperedAction((username as string).toLowerCase(), message);
+            this.processWhisperedAction((username as string).toLowerCase(), message);
         }
     }
 
@@ -114,7 +160,7 @@ export class BattleForCorvusBot extends SocketClient {
                 this.sendMessage(`Thanks, ${p}! Current game is at ${this.transferred} peggles. Type '!give BattleForCorvus #' to make the next battle more difficult. The next battle will start in 30 seconds. Transferring more peggles will reset the 30 second timer.`);
             }
         } else if (this.game) {
-            this.game.processAction((username as string).toLowerCase(), (message as string).toLowerCase());
+            this.processAction((username as string).toLowerCase(), (message as string).toLowerCase());
         }
     }
 
@@ -122,6 +168,7 @@ export class BattleForCorvusBot extends SocketClient {
         const players: string = this.participants.join(', ');
         this.sendMessage(`Battle for Corvus has begun! Participants are ${players}.`);
         this.game = new Game(this, this.participants, this.transferred);
+        this.game.start();
         this.sendMessage(`Difficulty is set to ${this.game.difficultyLevel}!`);
         this.game.once('end', this.closeGame, this);
         this.transferred = 0;

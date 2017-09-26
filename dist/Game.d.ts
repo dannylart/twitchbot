@@ -20,6 +20,7 @@ export declare class Game extends EventDispatcher {
     gameOver: boolean;
     loopInterval: any;
     constructor(bot: BattleForCorvusBot, particpants: string[], difficulty: number);
+    start(): void;
     readonly difficultyLevel: number;
     endTurn(): void;
     endGame(): void;
@@ -30,8 +31,6 @@ export declare class Game extends EventDispatcher {
     readonly playersRemaining: number;
     randomAlivePlayer(): Player | null;
     getPlayer(playerName: string): Player | null;
-    processAction(player: string, message: string): void;
-    processWhisperedAction(playerName: string, message: string): void;
     getActions(): string[];
     getWhisperActions(): string[];
     generateRandomRoom(id: number, x: number, y: number): IRoom;

@@ -55,7 +55,9 @@ export class Game extends EventDispatcher {
             this.players.push(new Player(p));
         }
         this.playerTurn = null;
+    }
 
+    public start(): void {
         // Generate rooms
         this.roomWidth = 1;
         for (const d of DIFFICULTIES) {
@@ -179,48 +181,6 @@ export class Game extends EventDispatcher {
         }
 
         return null;
-    }
-
-    public processAction(player: string, message: string): void {
-        if (this.player === null) return;
-        if (this.player.name !== player || this.paused)
-            return;
-
-        const parts: string[] = message.trim().split(' ');
-        const hasEnemies: boolean = this.room.hasEnemies;
-        console.log(parts);
-        for (const a of Game.actions) {
-            if (a.keyword === parts[0] && a.combat === hasEnemies) {
-                const action: IAction = new (a as any)(this, this.player, parts);
-                const result: IActionResult = action.process();
-                if (result.message)
-                    this.bot.sendMessage(result.message);
-
-                // Can only use one action when there are enemies
-                if (hasEnemies && result.success)
-                    this.endTurn();
-            } else if (a.keyword === parts[0] && a.combat !== hasEnemies) {
-                this.bot.sendMessage(`Currently cannot use ${parts[0].substr(1)}. Available commands: ${this.getActions().join(', ')}`);
-            }
-        }
-    }
-
-    public processWhisperedAction(playerName: string, message: string): void {
-        const player: Player | null = this.getPlayer(playerName);
-        if (player === null) return;
-
-        const parts: string[] = message.trim().split(' ');
-        console.log(parts);
-        for (const a of Game.actions) {
-            if (a.keyword === parts[0] && a.whisper) {
-                const action: IAction = new (a as any)(this, player, parts);
-                const result: IActionResult = action.process();
-                if (result.message)
-                    this.bot.sendMessage(`/w ${playerName} ${result.message}`);
-            } else if (a.keyword === parts[0] && !a.whisper) {
-                this.bot.sendMessage(`/w ${playerName} Currently cannot use ${parts[0].substr(1)}. Available whisper commands: ${this.getWhisperActions().join(', ')}`);
-            }
-        }
     }
 
     public getActions(): string[] {

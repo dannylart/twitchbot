@@ -24,9 +24,9 @@ var Level = /** @class */ (function (_super) {
                 message: "Not enough experience to level. You have " + this.player.experience + " experience of the " + requirement + " needed.",
                 success: false
             };
-        var availble = this.player.getAvailableClasses();
+        var available = this.player.getAvailableClasses();
         if (this.parts.length > 1) {
-            if (availble.indexOf(this.parts[1]) > -1) {
+            if (available.indexOf(this.parts[1]) > -1) {
                 var cls = ClassManager_1.ClassManager.getClass(this.parts[1], 1);
                 this.player.experience -= requirement;
                 var lvl = this.player.levelUp(this.parts[1], cls.getBaseClassAttributes());
@@ -42,7 +42,7 @@ var Level = /** @class */ (function (_super) {
         }
         else {
             return {
-                message: "The following can be leveled: " + availble.join(', '),
+                message: "The following can be leveled: " + available.join(', '),
                 success: false
             };
         }

@@ -48,40 +48,42 @@ var Game = /** @class */ (function (_super) {
             _this.players.push(new Player_1.Player(p));
         }
         _this.playerTurn = null;
+        return _this;
+    }
+    Game.prototype.start = function () {
         // Generate rooms
-        _this.roomWidth = 1;
-        for (var _a = 0, DIFFICULTIES_1 = DIFFICULTIES; _a < DIFFICULTIES_1.length; _a++) {
-            var d = DIFFICULTIES_1[_a];
-            if (_this.difficulty >= d) {
-                _this.roomWidth += 1;
+        this.roomWidth = 1;
+        for (var _i = 0, DIFFICULTIES_1 = DIFFICULTIES; _i < DIFFICULTIES_1.length; _i++) {
+            var d = DIFFICULTIES_1[_i];
+            if (this.difficulty >= d) {
+                this.roomWidth += 1;
             }
             else {
                 break;
             }
         }
-        console.log('roomWidth', _this.roomWidth);
+        console.log('roomWidth', this.roomWidth);
         var roomId = 1;
-        for (var x = 1; x <= _this.roomWidth; x++) {
-            for (var y = 1; y <= _this.roomWidth; y++) {
+        for (var x = 1; x <= this.roomWidth; x++) {
+            for (var y = 1; y <= this.roomWidth; y++) {
                 if (roomId === 1) {
-                    _this.rooms.push(new Entrance_1.Entrance(_this, roomId, x, y, _this.difficultyLevel + Math.floor(x / 2) + Math.floor(y / 2)));
+                    this.rooms.push(new Entrance_1.Entrance(this, roomId, x, y, this.difficultyLevel + Math.floor(x / 2) + Math.floor(y / 2)));
                 }
-                else if (x === _this.roomWidth && y === _this.roomWidth) {
-                    var bossRoom = new Crypt_1.Crypt(_this, roomId, x, y, _this.difficultyLevel + Math.floor(x / 2) + Math.floor(y / 2));
-                    _this.rooms.push(bossRoom);
-                    bossRoom.once('end', _this.endGame, _this);
+                else if (x === this.roomWidth && y === this.roomWidth) {
+                    var bossRoom = new Crypt_1.Crypt(this, roomId, x, y, this.difficultyLevel + Math.floor(x / 2) + Math.floor(y / 2));
+                    this.rooms.push(bossRoom);
+                    bossRoom.once('end', this.endGame, this);
                 }
                 else {
-                    _this.rooms.push(_this.generateRandomRoom(roomId, x, y));
+                    this.rooms.push(this.generateRandomRoom(roomId, x, y));
                 }
                 roomId += 1;
             }
         }
-        _this.room = _this.rooms[0];
-        _this.endTurn();
-        _this.loopInterval = setInterval(_this.loop.bind(_this), 1000);
-        return _this;
-    }
+        this.room = this.rooms[0];
+        this.endTurn();
+        this.loopInterval = setInterval(this.loop.bind(this), 1000);
+    };
     Object.defineProperty(Game.prototype, "difficultyLevel", {
         get: function () {
             return Math.floor(this.difficulty / 5 / this.players.length) + 1;
@@ -185,49 +187,6 @@ var Game = /** @class */ (function (_super) {
                 return p;
         }
         return null;
-    };
-    Game.prototype.processAction = function (player, message) {
-        if (this.player === null)
-            return;
-        if (this.player.name !== player || this.paused)
-            return;
-        var parts = message.trim().split(' ');
-        var hasEnemies = this.room.hasEnemies;
-        console.log(parts);
-        for (var _i = 0, _a = Game.actions; _i < _a.length; _i++) {
-            var a = _a[_i];
-            if (a.keyword === parts[0] && a.combat === hasEnemies) {
-                var action = new a(this, this.player, parts);
-                var result = action.process();
-                if (result.message)
-                    this.bot.sendMessage(result.message);
-                // Can only use one action when there are enemies
-                if (hasEnemies && result.success)
-                    this.endTurn();
-            }
-            else if (a.keyword === parts[0] && a.combat !== hasEnemies) {
-                this.bot.sendMessage("Currently cannot use " + parts[0].substr(1) + ". Available commands: " + this.getActions().join(', '));
-            }
-        }
-    };
-    Game.prototype.processWhisperedAction = function (playerName, message) {
-        var player = this.getPlayer(playerName);
-        if (player === null)
-            return;
-        var parts = message.trim().split(' ');
-        console.log(parts);
-        for (var _i = 0, _a = Game.actions; _i < _a.length; _i++) {
-            var a = _a[_i];
-            if (a.keyword === parts[0] && a.whisper) {
-                var action = new a(this, player, parts);
-                var result = action.process();
-                if (result.message)
-                    this.bot.sendMessage("/w " + playerName + " " + result.message);
-            }
-            else if (a.keyword === parts[0] && !a.whisper) {
-                this.bot.sendMessage("/w " + playerName + " Currently cannot use " + parts[0].substr(1) + ". Available whisper commands: " + this.getWhisperActions().join(', '));
-            }
-        }
     };
     Game.prototype.getActions = function () {
         var actions = [];

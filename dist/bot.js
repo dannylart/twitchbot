@@ -32,6 +32,52 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
         if (this.canSendMessage)
             this.processMessageQueue();
     };
+    BattleForCorvusBot.prototype.processAction = function (player, message) {
+        if (!this.game)
+            return;
+        if (this.game.player === null)
+            return;
+        if (this.game.player.name !== player || this.game.paused)
+            return;
+        var parts = message.trim().split(' ');
+        var hasEnemies = this.game.room.hasEnemies;
+        console.log(parts);
+        for (var _i = 0, _a = Game_1.Game.actions; _i < _a.length; _i++) {
+            var a = _a[_i];
+            if (a.keyword === parts[0] && a.combat === hasEnemies) {
+                var action = new a(this, this.game.player, parts);
+                var result = action.process();
+                if (result.message)
+                    this.sendMessage(result.message);
+                // Can only use one action when there are enemies
+                if (hasEnemies && result.success)
+                    this.game.endTurn();
+            }
+            else if (a.keyword === parts[0] && a.combat !== hasEnemies) {
+                this.sendMessage("Currently cannot use " + parts[0].substr(1) + ". Available commands: " + this.game.getActions().join(', '));
+            }
+        }
+    };
+    BattleForCorvusBot.prototype.processWhisperedAction = function (playerName, message) {
+        var game = this.game || new Game_1.Game(this, [playerName], 0);
+        var player = game.getPlayer(playerName);
+        if (player === null)
+            return;
+        var parts = message.trim().split(' ');
+        console.log(parts);
+        for (var _i = 0, _a = Game_1.Game.actions; _i < _a.length; _i++) {
+            var a = _a[_i];
+            if (a.keyword === parts[0] && a.whisper) {
+                var action = new a(game, player, parts);
+                var result = action.process();
+                if (result.message)
+                    this.sendMessage("/w " + playerName + " " + result.message);
+            }
+            else if (a.keyword === parts[0] && !a.whisper) {
+                this.sendMessage("/w " + playerName + " Currently cannot use " + parts[0].substr(1) + ". Available whisper commands: " + game.getWhisperActions().join(', '));
+            }
+        }
+    };
     BattleForCorvusBot.prototype.processMessageQueue = function () {
         clearTimeout(this.messageTimeout);
         this.messageTimeout = setTimeout(this.processMessageQueue.bind(this), 500);
@@ -74,12 +120,12 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
             var message = line.splice(0).join(' ');
             this.onMessage(username, channel, message);
         }
-        else if (this.game && line[1] === 'WHISPER') {
+        else if (line[1] === 'WHISPER') {
             var info = line.shift();
             var action = line.shift();
             var channel = line.shift();
             var message = line.splice(0).join(' ');
-            this.game.processWhisperedAction(username.toLowerCase(), message);
+            this.processWhisperedAction(username.toLowerCase(), message);
         }
     };
     BattleForCorvusBot.prototype.onMessage = function (username, channel, message) {
@@ -104,13 +150,14 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
             }
         }
         else if (this.game) {
-            this.game.processAction(username.toLowerCase(), message.toLowerCase());
+            this.processAction(username.toLowerCase(), message.toLowerCase());
         }
     };
     BattleForCorvusBot.prototype.startGame = function () {
         var players = this.participants.join(', ');
         this.sendMessage("Battle for Corvus has begun! Participants are " + players + ".");
         this.game = new Game_1.Game(this, this.participants, this.transferred);
+        this.game.start();
         this.sendMessage("Difficulty is set to " + this.game.difficultyLevel + "!");
         this.game.once('end', this.closeGame, this);
         this.transferred = 0;

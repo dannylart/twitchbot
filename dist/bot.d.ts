@@ -12,6 +12,8 @@ export declare class BattleForCorvusBot extends SocketClient {
     private messageTimeout;
     constructor(env: any);
     sendMessage(message: string): void;
+    processAction(player: string, message: string): void;
+    processWhisperedAction(playerName: string, message: string): void;
     private processMessageQueue();
     private onConnect();
     private getUsername(data);
