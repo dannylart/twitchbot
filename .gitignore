@@ -1,3 +1,5 @@
 env.json
 node_modules
 players/*.json
+
+.idea/workspace.xml
