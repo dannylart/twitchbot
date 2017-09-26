@@ -11,6 +11,9 @@ export declare class Player extends Character {
     addExperience(xp: number): void;
     readonly level: number;
     levelUp(cls: string, attrs: IAttributes): number;
+    getSpells(): string[];
+    hasSpell(spellName: string): boolean;
+    getAvailableClasses(): string[];
     private fileName();
     private open();
     private save();

@@ -15,15 +15,6 @@ import {Status} from './actions/Status';
 import {Take} from './actions/Take';
 import {Use} from './actions/Use';
 import {BattleForCorvusBot} from './bot';
-import {Class} from './Class';
-import {Artisan} from './classes/Artisan';
-import {Chemist} from './classes/Chemist';
-import {Cleric} from './classes/Cleric';
-import {Fighter} from './classes/Fighter';
-import {Knight} from './classes/Knight';
-import {Ranger} from './classes/Ranger';
-import {Rogue} from './classes/Rogue';
-import {Wizard} from './classes/Wizard';
 import {Player} from './Player';
 import {IRoom, Room} from './Room';
 import {Crypt} from './rooms/Crypt';
@@ -36,7 +27,6 @@ const DIFFICULTIES: number[] = [1, 50, 200, 500, 1000];
 export class Game extends EventDispatcher {
     public static actions: typeof Action[];
     public static roomTypes: typeof Room[];
-    public static classes: typeof Class[];
     public players: Player[];
     public commander: Player;
     public playerTurn: number | null;
@@ -261,38 +251,7 @@ export class Game extends EventDispatcher {
         return new room(this, id, x, y, this.difficultyLevel + Math.floor(x / 2) + Math.floor(y / 2)) as IRoom;
     }
 
-    public getClass(cls: string, level: number): Class | null {
-        for (const c of Game.classes)
-            if (c.keyword === cls)
-                return new (c as any)(level);
 
-        return null;
-    }
-
-    public getPlayerSpells(player: Player): string[] {
-        const spells: string[] = [];
-
-        for (const cls in player.classes) {
-            const c: Class | null = this.getClass(cls, player.classes[cls]);
-            if (c)
-                spells.push(...c.getClassSpells());
-        }
-
-        return spells;
-    }
-
-    public playerHasSpell(player: Player, spellName: string): boolean {
-        return this.getPlayerSpells(player).indexOf(spellName) > -1;
-    }
-
-    public getAvailableClasses(p: Player): string[] {
-        const classes: string[] = [];
-        for (const cls of Game.classes)
-            if (cls.isAvailable(p, cls))
-                classes.push(cls.keyword);
-
-        return classes;
-    }
 
     private loop(): void {
         if (this.gameOver) return;
@@ -321,13 +280,3 @@ Game.actions.push(Use);
 Game.roomTypes = [];
 Game.roomTypes.push(Library);
 Game.roomTypes.push(Smithy);
-
-Game.classes = [];
-Game.classes.push(Artisan);
-Game.classes.push(Fighter);
-Game.classes.push(Chemist);
-Game.classes.push(Cleric);
-Game.classes.push(Knight);
-Game.classes.push(Ranger);
-Game.classes.push(Rogue);
-Game.classes.push(Wizard);

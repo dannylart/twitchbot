@@ -25,14 +25,6 @@ var Loot_1 = require("./actions/Loot");
 var Status_1 = require("./actions/Status");
 var Take_1 = require("./actions/Take");
 var Use_1 = require("./actions/Use");
-var Artisan_1 = require("./classes/Artisan");
-var Chemist_1 = require("./classes/Chemist");
-var Cleric_1 = require("./classes/Cleric");
-var Fighter_1 = require("./classes/Fighter");
-var Knight_1 = require("./classes/Knight");
-var Ranger_1 = require("./classes/Ranger");
-var Rogue_1 = require("./classes/Rogue");
-var Wizard_1 = require("./classes/Wizard");
 var Player_1 = require("./Player");
 var Crypt_1 = require("./rooms/Crypt");
 var Entrance_1 = require("./rooms/Entrance");
@@ -260,35 +252,6 @@ var Game = /** @class */ (function (_super) {
         var room = Game.roomTypes[Math.floor(Math.random() * Game.roomTypes.length)];
         return new room(this, id, x, y, this.difficultyLevel + Math.floor(x / 2) + Math.floor(y / 2));
     };
-    Game.prototype.getClass = function (cls, level) {
-        for (var _i = 0, _a = Game.classes; _i < _a.length; _i++) {
-            var c = _a[_i];
-            if (c.keyword === cls)
-                return new c(level);
-        }
-        return null;
-    };
-    Game.prototype.getPlayerSpells = function (player) {
-        var spells = [];
-        for (var cls in player.classes) {
-            var c = this.getClass(cls, player.classes[cls]);
-            if (c)
-                spells.push.apply(spells, c.getClassSpells());
-        }
-        return spells;
-    };
-    Game.prototype.playerHasSpell = function (player, spellName) {
-        return this.getPlayerSpells(player).indexOf(spellName) > -1;
-    };
-    Game.prototype.getAvailableClasses = function (p) {
-        var classes = [];
-        for (var _i = 0, _a = Game.classes; _i < _a.length; _i++) {
-            var cls = _a[_i];
-            if (cls.isAvailable(p, cls))
-                classes.push(cls.keyword);
-        }
-        return classes;
-    };
     Game.prototype.loop = function () {
         if (this.gameOver)
             return;
@@ -319,13 +282,4 @@ Game.actions.push(Use_1.Use);
 Game.roomTypes = [];
 Game.roomTypes.push(Library_1.Library);
 Game.roomTypes.push(Smithy_1.Smithy);
-Game.classes = [];
-Game.classes.push(Artisan_1.Artisan);
-Game.classes.push(Fighter_1.Fighter);
-Game.classes.push(Chemist_1.Chemist);
-Game.classes.push(Cleric_1.Cleric);
-Game.classes.push(Knight_1.Knight);
-Game.classes.push(Ranger_1.Ranger);
-Game.classes.push(Rogue_1.Rogue);
-Game.classes.push(Wizard_1.Wizard);
 //# sourceMappingURL=Game.js.map

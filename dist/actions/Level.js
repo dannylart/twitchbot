@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Action_1 = require("../Action");
+var ClassManager_1 = require("../ClassManager");
 var Level = /** @class */ (function (_super) {
     __extends(Level, _super);
     function Level() {
@@ -23,10 +24,10 @@ var Level = /** @class */ (function (_super) {
                 message: "Not enough experience to level. You have " + this.player.experience + " experience of the " + requirement + " needed.",
                 success: false
             };
-        var availble = this.game.getAvailableClasses(this.player);
+        var availble = this.player.getAvailableClasses();
         if (this.parts.length > 1) {
             if (availble.indexOf(this.parts[1]) > -1) {
-                var cls = this.game.getClass(this.parts[1], 1);
+                var cls = ClassManager_1.ClassManager.getClass(this.parts[1], 1);
                 this.player.experience -= requirement;
                 var lvl = this.player.levelUp(this.parts[1], cls.getBaseClassAttributes());
                 return {

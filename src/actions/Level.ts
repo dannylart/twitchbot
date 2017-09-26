@@ -1,4 +1,5 @@
 import {Action, IActionResult} from '../Action';
+import {ClassManager} from '../ClassManager';
 
 export class Level extends Action {
     public static keyword: string = ':!level';
@@ -12,10 +13,10 @@ export class Level extends Action {
                 success: false
             };
 
-        const availble: string[] = this.game.getAvailableClasses(this.player);
+        const availble: string[] = this.player.getAvailableClasses();
         if (this.parts.length > 1) {
             if (availble.indexOf(this.parts[1]) > -1) {
-                const cls: any = this.game.getClass(this.parts[1], 1);
+                const cls: any = ClassManager.getClass(this.parts[1], 1);
                 this.player.experience -= requirement;
                 const lvl: number = this.player.levelUp(this.parts[1], cls.getBaseClassAttributes());
 

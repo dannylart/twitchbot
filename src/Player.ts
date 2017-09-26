@@ -1,5 +1,7 @@
 import * as jsonfile from 'jsonfile';
 import {Character} from './Character';
+import {Class} from './Class';
+import {ClassManager} from './ClassManager';
 import {IAttributes} from './IAttributes';
 import {INumberStore} from './IStore';
 
@@ -49,6 +51,31 @@ export class Player extends Character {
         this.mana = this.maxMana;
 
         return this.classes[cls];
+    }
+
+    public getSpells(): string[] {
+        const spells: string[] = [];
+
+        for (const cls in this.classes) {
+            const c: Class | null = ClassManager.getClass(cls, this.classes[cls]);
+            if (c)
+                spells.push(...c.getClassSpells());
+        }
+
+        return spells;
+    }
+
+    public hasSpell(spellName: string): boolean {
+        return this.getSpells().indexOf(spellName) > -1;
+    }
+
+    public getAvailableClasses(): string[] {
+        const classes: string[] = [];
+        for (const cls of ClassManager.classes)
+            if (cls.isAvailable(this, cls))
+                classes.push(cls.keyword);
+
+        return classes;
     }
 
     private fileName(): string {

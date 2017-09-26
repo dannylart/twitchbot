@@ -12,6 +12,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var jsonfile = require("jsonfile");
 var Character_1 = require("./Character");
+var ClassManager_1 = require("./ClassManager");
 var Player = /** @class */ (function (_super) {
     __extends(Player, _super);
     function Player(name) {
@@ -53,6 +54,27 @@ var Player = /** @class */ (function (_super) {
         this.health = this.maxHealth;
         this.mana = this.maxMana;
         return this.classes[cls];
+    };
+    Player.prototype.getSpells = function () {
+        var spells = [];
+        for (var cls in this.classes) {
+            var c = ClassManager_1.ClassManager.getClass(cls, this.classes[cls]);
+            if (c)
+                spells.push.apply(spells, c.getClassSpells());
+        }
+        return spells;
+    };
+    Player.prototype.hasSpell = function (spellName) {
+        return this.getSpells().indexOf(spellName) > -1;
+    };
+    Player.prototype.getAvailableClasses = function () {
+        var classes = [];
+        for (var _i = 0, _a = ClassManager_1.ClassManager.classes; _i < _a.length; _i++) {
+            var cls = _a[_i];
+            if (cls.isAvailable(this, cls))
+                classes.push(cls.keyword);
+        }
+        return classes;
     };
     Player.prototype.fileName = function () {
         return "./players/" + this.name + ".json";

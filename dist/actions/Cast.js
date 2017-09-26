@@ -24,11 +24,11 @@ var Cast = /** @class */ (function (_super) {
     Cast.prototype.process = function () {
         if (!this.parts[1]) {
             return {
-                message: "You can cast the following spells: " + this.game.getPlayerSpells(this.player).join(', '),
+                message: "You can cast the following spells: " + this.player.getSpells().join(', '),
                 success: false
             };
         }
-        if (!this.game.playerHasSpell(this.player, this.parts[1])) {
+        if (!this.player.hasSpell(this.parts[1])) {
             return {
                 message: "You cannot cast " + this.parts[1] + ".",
                 success: false
