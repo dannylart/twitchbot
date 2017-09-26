@@ -232,7 +232,7 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
             collectiveLevel += this.getPlayer(name_1).level;
         }
         // Open sauce? No cheating!
-        var chance = this.brawlAmount * 10 / collectiveLevel;
+        var chance = this.brawlAmount * 40 / collectiveLevel;
         if (chance > 60)
             chance = 60;
         var survivors = [];

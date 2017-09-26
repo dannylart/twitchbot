@@ -12,7 +12,7 @@ export class Status extends Action {
         }
 
         return {
-            message: `${attributes} ${this.player.experience} experience. Classes: ${classes.join(', ')}`,
+            message: `${attributes} ${this.player.experience} experience, ${this.player.gold} gold. Classes: ${classes.join(', ')}`,
             success: true
         };
     }

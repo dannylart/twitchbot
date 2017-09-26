@@ -23,7 +23,7 @@ var Status = /** @class */ (function (_super) {
             classes.push("L" + this.player.classes[c] + " " + c);
         }
         return {
-            message: attributes + " " + this.player.experience + " experience. Classes: " + classes.join(', '),
+            message: attributes + " " + this.player.experience + " experience, " + this.player.gold + " gold. Classes: " + classes.join(', '),
             success: true
         };
     };

@@ -26,7 +26,7 @@ export abstract class Action implements IAction {
     public abstract process(): IActionResult;
 
     protected addPartyExperienceAndGold(experience: number): string {
-        const gold: number = Math.floor(experience * Math.random() * .5);
+        const gold: number = Math.floor(experience * Math.random() * .1);
         for (const player of this.game.alivePlayers) {
             player.addExperience(experience);
             player.addGold(gold);
