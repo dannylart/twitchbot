@@ -84,7 +84,7 @@ export abstract class Character extends EventDispatcher implements IAttributes {
             damage = Math.floor(damage * 2);
 
         this.health -= damage;
-        const result: string = `${attacker.name} ${action} ${this.name} and was ${hit} for ${damage} and has`;
+        const result: string = `${attacker.name} ${action} ${this.name} and ${hit} for ${damage}. ${this.name} has`;
         if (!this.dead) {
             return `${result} ${this.health} health remaining.`;
         } else {
