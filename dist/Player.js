@@ -120,8 +120,6 @@ var Player = /** @class */ (function (_super) {
             luck: this.luck,
             classes: this.classes,
             inventory: this.inventory
-        }, null, function (err) {
-            console.log('err', err);
         });
     };
     return Player;

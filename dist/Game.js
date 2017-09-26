@@ -25,7 +25,6 @@ var Loot_1 = require("./actions/Loot");
 var Status_1 = require("./actions/Status");
 var Take_1 = require("./actions/Take");
 var Use_1 = require("./actions/Use");
-var Player_1 = require("./Player");
 var Crypt_1 = require("./rooms/Crypt");
 var Entrance_1 = require("./rooms/Entrance");
 var Library_1 = require("./rooms/Library");
@@ -37,16 +36,11 @@ var Game = /** @class */ (function (_super) {
         var _this = _super.call(this) || this;
         _this.bot = bot;
         _this.difficulty = difficulty;
-        _this.players = [];
+        _this.participants = particpants;
         _this.rooms = [];
         _this.exploredRooms = [];
         _this.paused = true;
         _this.gameOver = false;
-        for (var _i = 0, particpants_1 = particpants; _i < particpants_1.length; _i++) {
-            var p = particpants_1[_i];
-            console.log('Adding', p);
-            _this.players.push(new Player_1.Player(p));
-        }
         _this.playerTurn = null;
         return _this;
     }
@@ -86,7 +80,7 @@ var Game = /** @class */ (function (_super) {
     };
     Object.defineProperty(Game.prototype, "difficultyLevel", {
         get: function () {
-            return Math.floor(this.difficulty / 5 / this.players.length) + 1;
+            return Math.floor(this.difficulty / 5 / this.participants.length) + 1;
         },
         enumerable: true,
         configurable: true
@@ -106,7 +100,7 @@ var Game = /** @class */ (function (_super) {
             else {
                 this.playerTurn += 1;
             }
-            if (this.playerTurn > this.players.length - 1) {
+            if (this.playerTurn > this.participants.length - 1) {
                 this.playerTurn = 0;
                 if (this.room.hasEnemies) {
                     this.bot.sendMessage(this.room.processEnemyTurn());
@@ -143,7 +137,7 @@ var Game = /** @class */ (function (_super) {
         get: function () {
             if (this.playerTurn === null)
                 return null;
-            return this.players[this.playerTurn];
+            return this.getPlayer(this.participants[this.playerTurn]);
         },
         enumerable: true,
         configurable: true
@@ -151,10 +145,11 @@ var Game = /** @class */ (function (_super) {
     Object.defineProperty(Game.prototype, "alivePlayers", {
         get: function () {
             var players = [];
-            for (var _i = 0, _a = this.players; _i < _a.length; _i++) {
+            for (var _i = 0, _a = this.participants; _i < _a.length; _i++) {
                 var p = _a[_i];
-                if (!p.dead)
-                    players.push(p);
+                var player = this.bot.getPlayer(p);
+                if (!player.dead)
+                    players.push(player);
             }
             return players;
         },
@@ -163,13 +158,7 @@ var Game = /** @class */ (function (_super) {
     });
     Object.defineProperty(Game.prototype, "playersRemaining", {
         get: function () {
-            var c = 0;
-            for (var _i = 0, _a = this.players; _i < _a.length; _i++) {
-                var p = _a[_i];
-                if (!p.dead)
-                    c += 1;
-            }
-            return c;
+            return this.alivePlayers.length;
         },
         enumerable: true,
         configurable: true
@@ -181,12 +170,9 @@ var Game = /** @class */ (function (_super) {
         return players[Math.floor(Math.random() * players.length)];
     };
     Game.prototype.getPlayer = function (playerName) {
-        for (var _i = 0, _a = this.players; _i < _a.length; _i++) {
-            var p = _a[_i];
-            if (p.name === playerName)
-                return p;
-        }
-        return null;
+        if (this.participants.indexOf(playerName) === -1)
+            return null;
+        return this.bot.getPlayer(playerName);
     };
     Game.prototype.getActions = function () {
         var actions = [];

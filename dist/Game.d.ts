@@ -6,8 +6,8 @@ import { IRoom, Room } from './Room';
 export declare class Game extends EventDispatcher {
     static actions: typeof Action[];
     static roomTypes: typeof Room[];
-    players: Player[];
     commander: Player;
+    participants: string[];
     playerTurn: number | null;
     room: IRoom;
     bot: BattleForCorvusBot;

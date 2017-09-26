@@ -12,22 +12,33 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var envData = require("../env.json");
 var Game_1 = require("./Game");
+var Player_1 = require("./Player");
 var SocketClient_1 = require("./SocketClient");
 var BattleForCorvusBot = /** @class */ (function (_super) {
     __extends(BattleForCorvusBot, _super);
     function BattleForCorvusBot(env) {
         var _this = _super.call(this) || this;
         _this.reUser = new RegExp(':([^!]+).+');
-        _this.reTransfer = new RegExp(/:Transferred (\d+) Peggles from ([^\s]+) to battleforcorvus./);
+        _this.reTransfer = new RegExp(/:transferred (\d+) peggles from ([^\s]+) to battleforcorvus./);
         _this.canSendMessage = true;
         _this.messageQueue = [];
         _this.transferred = 0;
         _this.config = env;
-        _this.lockedPlayers = [];
+        _this.players = [];
         _this.bind('connected', _this.onConnect, _this);
         _this.connect(_this.config);
         return _this;
     }
+    BattleForCorvusBot.prototype.getPlayer = function (playerName) {
+        for (var _i = 0, _a = this.players; _i < _a.length; _i++) {
+            var p = _a[_i];
+            if (p.name === playerName)
+                return p;
+        }
+        var player = new Player_1.Player(playerName);
+        this.players.push(player);
+        return player;
+    };
     BattleForCorvusBot.prototype.sendMessage = function (message) {
         this.messageQueue.push(message);
         if (this.canSendMessage)
@@ -38,7 +49,7 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
             return;
         if (this.game.player === null)
             return;
-        if (this.game.player.name !== player || this.game.paused)
+        if (this.game.player.name !== player.name || this.game.paused)
             return;
         var parts = message.trim().split(' ');
         var hasEnemies = this.game.room.hasEnemies;
@@ -59,21 +70,11 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
             }
         }
     };
-    BattleForCorvusBot.prototype.processWhisperedAction = function (playerName, message) {
+    BattleForCorvusBot.prototype.processWhisperedAction = function (player, message) {
         var _this = this;
-        var game = this.game || new Game_1.Game(this, [playerName], 0);
-        var player = game.getPlayer(playerName);
+        var game = this.game || new Game_1.Game(this, [player.name], 0);
         if (player === null)
             return;
-        // Lock player whispers if a game is not active
-        var locked = this.lockedPlayers.indexOf(playerName) > -1;
-        if (!this.game && !locked) {
-            this.lockedPlayers.push(playerName);
-        }
-        else if (!this.game && locked) {
-            this.sendMessage("/w " + player.name + " Player file locked. Please try the command again in a few moments.");
-            return;
-        }
         if (player.loaded) {
             this._processWhisperedAction(game, player, message);
         }
@@ -90,10 +91,6 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
             if (a.keyword === parts[0] && a.whisper) {
                 var action = new a(game, player, parts);
                 var result = action.process();
-                // Queue the player to be removed from locked players
-                // @todo: Still leaves a little room for player file to be opened before it's saved, will fix later
-                if (!this.game)
-                    this.lockedPlayers.splice(this.lockedPlayers.indexOf(player.name), 1);
                 if (result.message)
                     this.sendMessage("/w " + player.name + " " + result.message);
             }
@@ -137,25 +134,42 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
             this.socket.write("PONG " + line[1]);
             console.log("PONG " + line[1]);
         }
-        else if (line[1] === 'PRIVMSG') {
+        else {
+            var player_1 = this.getPlayer(username);
+            if (player_1.loaded)
+                this._onData(player_1, line);
+            else
+                (function (bot, _player, _line) {
+                    player_1.once('loaded', function () {
+                        bot._onData(_player, _line);
+                    }, bot);
+                })(this, player_1, line);
+        }
+    };
+    BattleForCorvusBot.prototype._onData = function (player, line) {
+        if (line[1] === 'PRIVMSG') {
             var info = line.shift();
             var action = line.shift();
             var channel = line.shift();
             var message = line.splice(0).join(' ');
-            this.onMessage(username, channel, message);
+            this.onMessage(player, channel, message);
         }
         else if (line[1] === 'WHISPER') {
             var info = line.shift();
             var action = line.shift();
             var channel = line.shift();
             var message = line.splice(0).join(' ');
-            this.processWhisperedAction(username.toLowerCase(), message);
+            this.processWhisperedAction(player, message);
         }
     };
-    BattleForCorvusBot.prototype.onMessage = function (username, channel, message) {
+    BattleForCorvusBot.prototype.onMessage = function (player, channel, message) {
         console.log(this.reTransfer.test(message), message);
+        if (!message)
+            return;
+        // Remove /r/n
+        message = message.trim().toLowerCase();
         // Handle starting a game
-        if (username === 'maleero' && this.reTransfer.test(message)) {
+        if (player.name === 'maleero' && this.reTransfer.test(message)) {
             if (!this.participants)
                 this.participants = [];
             var transfer = this.reTransfer.exec(message);
@@ -173,12 +187,13 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
                 this.sendMessage("Thanks, " + p + "! Current game is at " + this.transferred + " peggles. Type '!give BattleForCorvus #' to make the next battle more difficult. The next battle will start in 30 seconds. Transferring more peggles will reset the 30 second timer.");
             }
         }
-        else if (message.substr(0, 6) === '!brawl') {
-            var parts = message.trim().split(' ');
+        else if (message.substr(0, 7) === ':!brawl') {
+            var parts = message.split(' ');
             var amount = parseInt(parts[1]);
+            this.sendMessage("BRAWL for " + amount + "!");
         }
         else if (this.game) {
-            this.processAction(username.toLowerCase(), message.toLowerCase());
+            this.processAction(player, message.toLowerCase());
         }
     };
     BattleForCorvusBot.prototype.startGame = function () {
@@ -198,8 +213,9 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
         this.sendMessage('The game has ended!');
         if (playersRemaining > 0) {
             var amount = Math.floor(this.game.difficulty / playersRemaining);
-            for (var _i = 0, _a = this.game.players; _i < _a.length; _i++) {
-                var player = _a[_i];
+            for (var _i = 0, _a = this.game.participants; _i < _a.length; _i++) {
+                var playerName = _a[_i];
+                var player = this.getPlayer(playerName);
                 if (!player.dead)
                     //this.sendMessage(`!give ${player.name} ${amount}`);
                     player.addGold(amount);

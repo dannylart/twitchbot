@@ -1,5 +1,5 @@
 import {EventDispatcher} from 'simple-ts-event-dispatcher';
-import {Action, IAction, IActionResult} from './Action';
+import {Action} from './Action';
 import {Attack} from './actions/Attack';
 import {Cast} from './actions/Cast';
 import {Craft} from './actions/Craft';
@@ -27,8 +27,8 @@ const DIFFICULTIES: number[] = [1, 50, 200, 500, 1000];
 export class Game extends EventDispatcher {
     public static actions: typeof Action[];
     public static roomTypes: typeof Room[];
-    public players: Player[];
     public commander: Player;
+    public participants: string[];
     public playerTurn: number | null;
     public room: IRoom;
     public bot: BattleForCorvusBot;
@@ -45,15 +45,11 @@ export class Game extends EventDispatcher {
         super();
         this.bot = bot;
         this.difficulty = difficulty;
-        this.players = [];
+        this.participants = particpants;
         this.rooms = [];
         this.exploredRooms = [];
         this.paused = true;
         this.gameOver = false;
-        for (const p of particpants) {
-            console.log('Adding', p);
-            this.players.push(new Player(p));
-        }
         this.playerTurn = null;
     }
 
@@ -89,7 +85,7 @@ export class Game extends EventDispatcher {
     }
 
     public get difficultyLevel(): number {
-        return Math.floor(this.difficulty / 5 / this.players.length) + 1;
+        return Math.floor(this.difficulty / 5 / this.participants.length) + 1;
     }
 
     public endTurn(): void {
@@ -106,7 +102,7 @@ export class Game extends EventDispatcher {
                 this.playerTurn += 1;
             }
 
-            if (this.playerTurn > this.players.length - 1) {
+            if (this.playerTurn > this.participants.length - 1) {
                 this.playerTurn = 0;
                 if (this.room.hasEnemies) {
                     this.bot.sendMessage(this.room.processEnemyTurn());
@@ -145,25 +141,22 @@ export class Game extends EventDispatcher {
         if (this.playerTurn === null)
             return null;
 
-        return this.players[this.playerTurn];
+        return this.getPlayer(this.participants[this.playerTurn]);
     }
 
     public get alivePlayers(): Player[] {
         const players: Player[] = [];
-        for (const p of this.players)
-            if (!p.dead)
-                players.push(p);
+        for (const p of this.participants) {
+            const player: Player = this.bot.getPlayer(p);
+            if (!player.dead)
+                players.push(player);
+        }
 
         return players;
     }
 
     public get playersRemaining(): number {
-        let c: number = 0;
-        for (const p of this.players)
-            if (!p.dead)
-                c += 1;
-
-        return c;
+        return this.alivePlayers.length;
     }
 
     public randomAlivePlayer(): Player | null {
@@ -175,12 +168,9 @@ export class Game extends EventDispatcher {
     }
 
     public getPlayer(playerName: string): Player | null {
-        for (const p of this.players) {
-            if (p.name === playerName)
-                return p;
-        }
+        if (this.participants.indexOf(playerName) === -1) return null;
 
-        return null;
+        return this.bot.getPlayer(playerName);
     }
 
     public getActions(): string[] {

@@ -26,7 +26,7 @@ export abstract class Action implements IAction {
     public abstract process(): IActionResult;
 
     protected addPartyExperience(experience: number): string {
-        for (const player of this.game.players)
+        for (const player of this.game.alivePlayers)
             player.addExperience(experience);
 
         return `The party has gained ${experience} experience.`;

@@ -9,6 +9,7 @@ type UserName = string | null;
 type Message = string | undefined;
 
 export class BattleForCorvusBot extends SocketClient {
+    private players: Player[];
     private config: IEnvironment;
     private reUser: RegExp;
     private reTransfer: RegExp;
@@ -20,19 +21,30 @@ export class BattleForCorvusBot extends SocketClient {
     private canSendMessage: boolean;
     private messageQueue: string[];
     private messageTimeout: any;
-    private lockedPlayers: string[];
 
     constructor(env: any) {
         super();
         this.reUser = new RegExp(':([^!]+).+');
-        this.reTransfer = new RegExp(/:Transferred (\d+) Peggles from ([^\s]+) to battleforcorvus./);
+        this.reTransfer = new RegExp(/:transferred (\d+) peggles from ([^\s]+) to battleforcorvus./);
         this.canSendMessage = true;
         this.messageQueue = [];
         this.transferred = 0;
         this.config = env as IEnvironment;
-        this.lockedPlayers = [];
+        this.players = [];
         this.bind('connected', this.onConnect, this);
         this.connect(this.config);
+    }
+
+    public getPlayer(playerName: string): Player {
+        for (const p of this.players) {
+            if (p.name === playerName)
+                return p;
+        }
+
+        const player: Player = new Player(playerName);
+        this.players.push(player);
+
+        return player;
     }
 
     public sendMessage(message: string): void {
@@ -41,10 +53,10 @@ export class BattleForCorvusBot extends SocketClient {
             this.processMessageQueue();
     }
 
-    public processAction(player: string, message: string): void {
+    public processAction(player: Player, message: string): void {
         if (!this.game) return;
         if (this.game.player === null) return;
-        if (this.game.player.name !== player || this.game.paused)
+        if (this.game.player.name !== player.name || this.game.paused)
             return;
 
         const parts: string[] = message.trim().split(' ');
@@ -66,20 +78,9 @@ export class BattleForCorvusBot extends SocketClient {
         }
     }
 
-    public processWhisperedAction(playerName: string, message: string): void {
-        const game: Game = this.game || new Game(this, [playerName], 0);
-        const player: Player | null = game.getPlayer(playerName);
+    public processWhisperedAction(player: Player, message: string): void {
+        const game: Game = this.game || new Game(this, [player.name], 0);
         if (player === null) return;
-
-        // Lock player whispers if a game is not active
-        const locked: boolean = this.lockedPlayers.indexOf(playerName) > -1;
-        if (!this.game && !locked) {
-            this.lockedPlayers.push(playerName);
-        } else if (!this.game && locked) {
-            this.sendMessage(`/w ${player.name} Player file locked. Please try the command again in a few moments.`);
-
-            return;
-        }
 
         if (player.loaded) {
             this._processWhisperedAction(game, player, message);
@@ -96,12 +97,6 @@ export class BattleForCorvusBot extends SocketClient {
             if (a.keyword === parts[0] && a.whisper) {
                 const action: IAction = new (a as any)(game, player, parts);
                 const result: IActionResult = action.process();
-
-                // Queue the player to be removed from locked players
-                // @todo: Quick fix. Still leaves a little room for player file to be opened before it's saved, will fix later
-                if (!this.game && this.lockedPlayers.indexOf(player.name) > -1)
-                    this.lockedPlayers.splice(this.lockedPlayers.indexOf(player.name), 1);
-
                 if (result.message)
                     this.sendMessage(`/w ${player.name} ${result.message}`);
             } else if (a.keyword === parts[0] && !a.whisper) {
@@ -149,30 +144,48 @@ export class BattleForCorvusBot extends SocketClient {
         if (line[0] === 'PING') {
             this.socket.write(`PONG ${line[1]}`);
             console.log(`PONG ${line[1]}`);
-        } else if (line[1] === 'PRIVMSG') {
+        } else {
+            const player: Player = this.getPlayer(username as string);
+            if (player.loaded)
+                this._onData(player, line);
+            else
+                (function(bot: BattleForCorvusBot, _player: Player, _line: string[]) {
+                    player.once('loaded', () => {
+                        bot._onData(_player, _line);
+                    }, bot);
+                })(this, player, line);
+        }
+    }
+
+    private _onData(player: Player, line: string[]) {
+        if (line[1] === 'PRIVMSG') {
             const info: Message = line.shift();
             const action: Message = line.shift();
             const channel: Message = line.shift();
             const message: Message = line.splice(0).join(' ');
-            this.onMessage(username, channel, message);
+            this.onMessage(player, channel, message);
         } else if (line[1] === 'WHISPER') {
             const info: Message = line.shift();
             const action: Message = line.shift();
             const channel: Message = line.shift();
             const message: Message = line.splice(0).join(' ');
-            this.processWhisperedAction((username as string).toLowerCase(), message);
+            this.processWhisperedAction(player, message);
         }
     }
 
-    private onMessage(username: UserName, channel: Message, message: Message): void {
+    private onMessage(player: Player, channel: Message, message: Message): void {
         console.log(this.reTransfer.test(message as string), message);
+        if (!message)
+            return;
+        // Remove /r/n
+        message = (message as string).trim().toLowerCase();
 
         // Handle starting a game
-        if (username === 'maleero' && this.reTransfer.test(message as string)) {
+        if (player.name === 'maleero' && this.reTransfer.test(message)) {
             if (!this.participants)
                 this.participants = [];
 
-            const transfer: any = this.reTransfer.exec(message as string);
+            const transfer: any = this.reTransfer.exec(message);
             const p: string = transfer[2].toLowerCase();
             this.transferred += parseInt(transfer[1]);
 
@@ -187,11 +200,12 @@ export class BattleForCorvusBot extends SocketClient {
                 this.gameTimeout = setTimeout(this.startGame.bind(this), 30000);
                 this.sendMessage(`Thanks, ${p}! Current game is at ${this.transferred} peggles. Type '!give BattleForCorvus #' to make the next battle more difficult. The next battle will start in 30 seconds. Transferring more peggles will reset the 30 second timer.`);
             }
-        } else if ((message as string).substr(0, 6) === '!brawl') {
-            const parts: string[] = (message as string).trim().split(' ');
+        } else if (message.substr(0, 7) === ':!brawl') {
+            const parts: string[] = message.split(' ');
             const amount: number = parseInt(parts[1]);
+            this.sendMessage(`BRAWL for ${amount}!`);
         } else if (this.game) {
-            this.processAction((username as string).toLowerCase(), (message as string).toLowerCase());
+            this.processAction(player, message.toLowerCase());
         }
     }
 
@@ -214,7 +228,8 @@ export class BattleForCorvusBot extends SocketClient {
         this.sendMessage('The game has ended!');
         if (playersRemaining > 0) {
             const amount: number = Math.floor(this.game.difficulty / playersRemaining);
-            for (const player of this.game.players) {
+            for (const playerName of this.game.participants) {
+                const player: Player = this.getPlayer(playerName);
                 if (!player.dead)
                     //this.sendMessage(`!give ${player.name} ${amount}`);
                     player.addGold(amount);

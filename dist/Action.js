@@ -7,7 +7,7 @@ var Action = /** @class */ (function () {
         this.parts = parts;
     }
     Action.prototype.addPartyExperience = function (experience) {
-        for (var _i = 0, _a = this.game.players; _i < _a.length; _i++) {
+        for (var _i = 0, _a = this.game.alivePlayers; _i < _a.length; _i++) {
             var player = _a[_i];
             player.addExperience(experience);
         }
