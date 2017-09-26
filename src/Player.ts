@@ -6,6 +6,7 @@ import {IAttributes} from './IAttributes';
 import {INumberStore} from './IStore';
 
 export class Player extends Character {
+    public loaded: boolean;
     public experienceForKill: number = 0;
     public readonly name: string;
     public classes: INumberStore;
@@ -17,6 +18,7 @@ export class Player extends Character {
         this.name = name;
         this.inventory = {};
         this.classes = {};
+        this.loaded = false;
         this.open();
     }
 
@@ -100,6 +102,8 @@ export class Player extends Character {
                 this.inventory = {};
                 this.classes = {};
             }
+            this.loaded = true;
+            this.trigger('loaded');
         });
     }
 

@@ -2,6 +2,7 @@ import { Character } from './Character';
 import { IAttributes } from './IAttributes';
 import { INumberStore } from './IStore';
 export declare class Player extends Character {
+    loaded: boolean;
     experienceForKill: number;
     readonly name: string;
     classes: INumberStore;

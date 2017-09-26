@@ -1,4 +1,6 @@
+import { Game } from './Game';
 import { SocketClient } from './SocketClient';
+import { Player } from './Player';
 export declare class BattleForCorvusBot extends SocketClient {
     private config;
     private reUser;
@@ -14,6 +16,7 @@ export declare class BattleForCorvusBot extends SocketClient {
     sendMessage(message: string): void;
     processAction(player: string, message: string): void;
     processWhisperedAction(playerName: string, message: string): void;
+    protected _processWhisperedAction(game: Game, player: Player, message: string): void;
     private processMessageQueue();
     private onConnect();
     private getUsername(data);

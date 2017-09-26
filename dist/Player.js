@@ -21,6 +21,7 @@ var Player = /** @class */ (function (_super) {
         _this.name = name;
         _this.inventory = {};
         _this.classes = {};
+        _this.loaded = false;
         _this.open();
         return _this;
     }
@@ -98,6 +99,8 @@ var Player = /** @class */ (function (_super) {
                 _this.inventory = {};
                 _this.classes = {};
             }
+            _this.loaded = true;
+            _this.trigger('loaded');
         });
     };
     Player.prototype.save = function () {

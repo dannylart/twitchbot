@@ -68,16 +68,25 @@ export class BattleForCorvusBot extends SocketClient {
         const player: Player | null = game.getPlayer(playerName);
         if (player === null) return;
 
+        if (player.loaded) {
+            this._processWhisperedAction(game, player, message);
+        } else {
+            player.once('loaded', () => {
+                this._processWhisperedAction(game, player, message);
+            }, this);
+        }
+    }
+
+    protected _processWhisperedAction(game: Game, player: Player, message: string): void {
         const parts: string[] = message.trim().split(' ');
-        console.log(parts);
         for (const a of Game.actions) {
             if (a.keyword === parts[0] && a.whisper) {
                 const action: IAction = new (a as any)(game, player, parts);
                 const result: IActionResult = action.process();
                 if (result.message)
-                    this.sendMessage(`/w ${playerName} ${result.message}`);
+                    this.sendMessage(`/w ${player.name} ${result.message}`);
             } else if (a.keyword === parts[0] && !a.whisper) {
-                this.sendMessage(`/w ${playerName} Currently cannot use ${parts[0].substr(1)}. Available whisper commands: ${game.getWhisperActions().join(', ')}`);
+                this.sendMessage(`/w ${player.name} Currently cannot use ${parts[0].substr(1)}. Available whisper commands: ${game.getWhisperActions().join(', ')}`);
             }
         }
     }

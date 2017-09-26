@@ -59,22 +59,32 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
         }
     };
     BattleForCorvusBot.prototype.processWhisperedAction = function (playerName, message) {
+        var _this = this;
         var game = this.game || new Game_1.Game(this, [playerName], 0);
         var player = game.getPlayer(playerName);
         if (player === null)
             return;
+        if (player.loaded) {
+            this._processWhisperedAction(game, player, message);
+        }
+        else {
+            player.once('loaded', function () {
+                _this._processWhisperedAction(game, player, message);
+            }, this);
+        }
+    };
+    BattleForCorvusBot.prototype._processWhisperedAction = function (game, player, message) {
         var parts = message.trim().split(' ');
-        console.log(parts);
         for (var _i = 0, _a = Game_1.Game.actions; _i < _a.length; _i++) {
             var a = _a[_i];
             if (a.keyword === parts[0] && a.whisper) {
                 var action = new a(game, player, parts);
                 var result = action.process();
                 if (result.message)
-                    this.sendMessage("/w " + playerName + " " + result.message);
+                    this.sendMessage("/w " + player.name + " " + result.message);
             }
             else if (a.keyword === parts[0] && !a.whisper) {
-                this.sendMessage("/w " + playerName + " Currently cannot use " + parts[0].substr(1) + ". Available whisper commands: " + game.getWhisperActions().join(', '));
+                this.sendMessage("/w " + player.name + " Currently cannot use " + parts[0].substr(1) + ". Available whisper commands: " + game.getWhisperActions().join(', '));
             }
         }
     };
