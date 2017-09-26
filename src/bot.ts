@@ -72,7 +72,7 @@ export class BattleForCorvusBot extends SocketClient {
         console.log(parts);
         for (const a of Game.actions) {
             if (a.keyword === parts[0] && a.combat === hasEnemies) {
-                const action: IAction = new (a as any)(this, this.game.player, parts);
+                const action: IAction = new (a as any)(this.game, this.game.player, parts);
                 const result: IActionResult = action.process();
                 if (result.message)
                     this.sendMessage(result.message);
@@ -248,7 +248,7 @@ export class BattleForCorvusBot extends SocketClient {
         }
 
         // Open sauce? No cheating!
-        let chance: number =  this.brawlAmount * 10 / collectiveLevel;
+        let chance: number =  this.brawlAmount * 40 / collectiveLevel;
         if (chance > 60)
             chance = 60;
         const survivors: string[] = [];
@@ -262,8 +262,8 @@ export class BattleForCorvusBot extends SocketClient {
         if (survivors.length === 0) {
             this.sendMessage('No one survived the brawl.');
         } else {
-            const xp: number = Math.floor(this.brawlAmount * 1.5 / survivors.length);
-            const gold: number = Math.floor(this.brawlAmount * 1.25 / survivors.length);
+            const xp: number = Math.floor(this.brawlAmount * 1.1 / survivors.length);
+            const gold: number = Math.floor(this.brawlAmount * .9 / survivors.length);
             this.sendMessage(`${survivors.join(', ')} barely survived the brawl. ${xp} experience and ${gold} gold has been awarded to the survivors.`);
             for (const name of survivors) {
                 const player: Player = this.getPlayer(name);

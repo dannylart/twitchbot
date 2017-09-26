@@ -11,7 +11,7 @@ export class Attack extends Action {
             if (e) {
                 let r: string = this.player.attack(e);
                 if (e.dead)
-                    r += this.addPartyExperience(e.getExperienceForKill());
+                    r += this.addPartyExperienceAndGold(e.getExperienceForKill());
 
                 return {
                     message: r,

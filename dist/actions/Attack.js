@@ -22,7 +22,7 @@ var Attack = /** @class */ (function (_super) {
             if (e) {
                 var r = this.player.attack(e);
                 if (e.dead)
-                    r += this.addPartyExperience(e.getExperienceForKill());
+                    r += this.addPartyExperienceAndGold(e.getExperienceForKill());
                 return {
                     message: r,
                     success: true

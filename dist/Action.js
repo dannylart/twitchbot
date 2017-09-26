@@ -6,12 +6,14 @@ var Action = /** @class */ (function () {
         this.player = player;
         this.parts = parts;
     }
-    Action.prototype.addPartyExperience = function (experience) {
+    Action.prototype.addPartyExperienceAndGold = function (experience) {
+        var gold = Math.floor(experience * Math.random() * .5);
         for (var _i = 0, _a = this.game.alivePlayers; _i < _a.length; _i++) {
             var player = _a[_i];
             player.addExperience(experience);
+            player.addGold(gold);
         }
-        return "The party has gained " + experience + " experience.";
+        return "The party has gained " + experience + " experience and " + gold + " gold.";
     };
     Action.combat = false;
     Action.whisper = false;

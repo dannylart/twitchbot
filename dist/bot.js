@@ -62,7 +62,7 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
         for (var _i = 0, _a = Game_1.Game.actions; _i < _a.length; _i++) {
             var a = _a[_i];
             if (a.keyword === parts[0] && a.combat === hasEnemies) {
-                var action = new a(this, this.game.player, parts);
+                var action = new a(this.game, this.game.player, parts);
                 var result = action.process();
                 if (result.message)
                     this.sendMessage(result.message);
@@ -235,7 +235,6 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
         var chance = this.brawlAmount * 10 / collectiveLevel;
         if (chance > 60)
             chance = 60;
-        this.sendMessage(chance + "% to win");
         var survivors = [];
         for (var _b = 0, _c = this.brawlParticipants; _b < _c.length; _b++) {
             var name_2 = _c[_b];
@@ -248,9 +247,9 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
             this.sendMessage('No one survived the brawl.');
         }
         else {
-            var xp = Math.floor(this.brawlAmount * 1.5 / survivors.length);
-            var gold = Math.floor(this.brawlAmount * 1.25 / survivors.length);
-            this.sendMessage(survivors.join(', ') + " barely survived the brawl. " + xp + " experience and " + gold + " have been awarded to the survivors.");
+            var xp = Math.floor(this.brawlAmount * 1.1 / survivors.length);
+            var gold = Math.floor(this.brawlAmount * .9 / survivors.length);
+            this.sendMessage(survivors.join(', ') + " barely survived the brawl. " + xp + " experience and " + gold + " gold has been awarded to the survivors.");
             for (var _d = 0, survivors_1 = survivors; _d < survivors_1.length; _d++) {
                 var name_3 = survivors_1[_d];
                 var player = this.getPlayer(name_3);
