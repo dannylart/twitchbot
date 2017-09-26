@@ -8,6 +8,8 @@ export declare class BattleForCorvusBot extends SocketClient {
     private reTransfer;
     private transferred;
     private brawlAmount;
+    private brawlParticipants;
+    private brawlTimeout;
     private game;
     private gameTimeout;
     private participants;
@@ -17,6 +19,7 @@ export declare class BattleForCorvusBot extends SocketClient {
     constructor(env: any);
     getPlayer(playerName: string): Player;
     sendMessage(message: string): void;
+    sendWhisper(player: Player, message: string): void;
     processAction(player: Player, message: string): void;
     processWhisperedAction(player: Player, message: string): void;
     protected _processWhisperedAction(game: Game, player: Player, message: string): void;
@@ -27,5 +30,6 @@ export declare class BattleForCorvusBot extends SocketClient {
     private _onData(player, line);
     private onMessage(player, channel, message);
     private startGame();
+    private startBrawl();
     private closeGame();
 }

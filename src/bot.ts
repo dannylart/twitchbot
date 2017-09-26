@@ -15,6 +15,8 @@ export class BattleForCorvusBot extends SocketClient {
     private reTransfer: RegExp;
     private transferred: number;
     private brawlAmount: number;
+    private brawlParticipants: string[];
+    private brawlTimeout: any;
     private game: Game | null;
     private gameTimeout: any;
     private participants: string[];
@@ -29,6 +31,8 @@ export class BattleForCorvusBot extends SocketClient {
         this.canSendMessage = true;
         this.messageQueue = [];
         this.transferred = 0;
+        this.brawlAmount = 0;
+        this.brawlParticipants = [];
         this.config = env as IEnvironment;
         this.players = [];
         this.bind('connected', this.onConnect, this);
@@ -51,6 +55,10 @@ export class BattleForCorvusBot extends SocketClient {
         this.messageQueue.push(message as string);
         if (this.canSendMessage)
             this.processMessageQueue();
+    }
+
+    public sendWhisper(player: Player, message: string): void {
+        this.sendMessage(`/w ${player.name} ${message}`);
     }
 
     public processAction(player: Player, message: string): void {
@@ -98,9 +106,9 @@ export class BattleForCorvusBot extends SocketClient {
                 const action: IAction = new (a as any)(game, player, parts);
                 const result: IActionResult = action.process();
                 if (result.message)
-                    this.sendMessage(`/w ${player.name} ${result.message}`);
+                    this.sendWhisper(player, result.message);
             } else if (a.keyword === parts[0] && !a.whisper) {
-                this.sendMessage(`/w ${player.name} Currently cannot use ${parts[0].substr(1)}. Available whisper commands: ${game.getWhisperActions().join(', ')}`);
+                this.sendWhisper(player, `Currently cannot use ${parts[0].substr(1)}. Available whisper commands: ${game.getWhisperActions().join(', ')}`);
             }
         }
     }
@@ -203,7 +211,18 @@ export class BattleForCorvusBot extends SocketClient {
         } else if (message.substr(0, 7) === ':!brawl') {
             const parts: string[] = message.split(' ');
             const amount: number = parseInt(parts[1]);
-            this.sendMessage(`BRAWL for ${amount}!`);
+            if (player.gold >= amount) {
+                player.removeGold(amount);
+                if (this.brawlParticipants.indexOf(player.name) === -1)
+                    this.brawlParticipants.push(player.name);
+                if (this.brawlAmount === 0)
+                    this.sendMessage(`A brawl is going to start soon! Type '!brawl gold_amount' to join!`);
+                this.brawlAmount += amount;
+                clearTimeout(this.brawlTimeout);
+                this.brawlTimeout = setTimeout(this.startBrawl.bind(this), 15000);
+            } else {
+                this.sendWhisper(player, `You do not have enough gold to !brawl ${amount}. You have ${player.gold}`);
+            }
         } else if (this.game) {
             this.processAction(player, message.toLowerCase());
         }
@@ -218,6 +237,43 @@ export class BattleForCorvusBot extends SocketClient {
         this.game.once('end', this.closeGame, this);
         this.transferred = 0;
         this.participants = [];
+    }
+
+    private startBrawl(): void {
+        const players: string = this.brawlParticipants.join(', ');
+        this.sendMessage(`A brawl has begun! Participants are ${players}.`);
+        let collectiveLevel: number = 0;
+        for (const name of this.brawlParticipants) {
+            collectiveLevel += this.getPlayer(name).level;
+        }
+
+        // Open sauce? No cheating!
+        let chance: number =  this.brawlAmount * 10 / collectiveLevel;
+        if (chance > 60)
+            chance = 60;
+        const survivors: string[] = [];
+        for (const name of this.brawlParticipants) {
+            const player: Player = this.getPlayer(name);
+            if (Math.random() * 100 <= chance) {
+                survivors.push(player.name);
+            }
+        }
+
+        if (survivors.length === 0) {
+            this.sendMessage('No one survived the brawl.');
+        } else {
+            const xp: number = Math.floor(this.brawlAmount * 1.5 / survivors.length);
+            const gold: number = Math.floor(this.brawlAmount * 1.25 / survivors.length);
+            this.sendMessage(`${survivors.join(', ')} barely survived the brawl. ${xp} experience and ${gold} gold has been awarded to the survivors.`);
+            for (const name of survivors) {
+                const player: Player = this.getPlayer(name);
+                player.addExperience(xp);
+                player.addGold(gold);
+            }
+        }
+
+        this.brawlAmount = 0;
+        this.brawlParticipants = [];
     }
 
     private closeGame(): void {

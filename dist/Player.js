@@ -29,6 +29,10 @@ var Player = /** @class */ (function (_super) {
         this.gold += gold;
         this.save();
     };
+    Player.prototype.removeGold = function (gold) {
+        this.gold -= gold;
+        this.save();
+    };
     Player.prototype.addExperience = function (xp) {
         this.experience += xp;
         this.save();
@@ -111,6 +115,7 @@ var Player = /** @class */ (function (_super) {
     };
     Player.prototype.save = function () {
         jsonfile.writeFile(this.fileName(), {
+            gold: this.gold,
             experience: this.experience,
             health: this.maxHealth,
             mana: this.maxMana,

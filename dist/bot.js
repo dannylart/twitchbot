@@ -23,6 +23,8 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
         _this.canSendMessage = true;
         _this.messageQueue = [];
         _this.transferred = 0;
+        _this.brawlAmount = 0;
+        _this.brawlParticipants = [];
         _this.config = env;
         _this.players = [];
         _this.bind('connected', _this.onConnect, _this);
@@ -43,6 +45,9 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
         this.messageQueue.push(message);
         if (this.canSendMessage)
             this.processMessageQueue();
+    };
+    BattleForCorvusBot.prototype.sendWhisper = function (player, message) {
+        this.sendMessage("/w " + player.name + " " + message);
     };
     BattleForCorvusBot.prototype.processAction = function (player, message) {
         if (!this.game)
@@ -92,10 +97,10 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
                 var action = new a(game, player, parts);
                 var result = action.process();
                 if (result.message)
-                    this.sendMessage("/w " + player.name + " " + result.message);
+                    this.sendWhisper(player, result.message);
             }
             else if (a.keyword === parts[0] && !a.whisper) {
-                this.sendMessage("/w " + player.name + " Currently cannot use " + parts[0].substr(1) + ". Available whisper commands: " + game.getWhisperActions().join(', '));
+                this.sendWhisper(player, "Currently cannot use " + parts[0].substr(1) + ". Available whisper commands: " + game.getWhisperActions().join(', '));
             }
         }
     };
@@ -190,7 +195,19 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
         else if (message.substr(0, 7) === ':!brawl') {
             var parts = message.split(' ');
             var amount = parseInt(parts[1]);
-            this.sendMessage("BRAWL for " + amount + "!");
+            if (player.gold >= amount) {
+                player.removeGold(amount);
+                if (this.brawlParticipants.indexOf(player.name) === -1)
+                    this.brawlParticipants.push(player.name);
+                if (this.brawlAmount === 0)
+                    this.sendMessage("A brawl is going to start soon! Type '!brawl gold_amount' to join!");
+                this.brawlAmount += amount;
+                clearTimeout(this.brawlTimeout);
+                this.brawlTimeout = setTimeout(this.startBrawl.bind(this), 15000);
+            }
+            else {
+                this.sendWhisper(player, "You do not have enough gold to !brawl " + amount + ". You have " + player.gold);
+            }
         }
         else if (this.game) {
             this.processAction(player, message.toLowerCase());
@@ -205,6 +222,44 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
         this.game.once('end', this.closeGame, this);
         this.transferred = 0;
         this.participants = [];
+    };
+    BattleForCorvusBot.prototype.startBrawl = function () {
+        var players = this.brawlParticipants.join(', ');
+        this.sendMessage("A brawl has begun! Participants are " + players + ".");
+        var collectiveLevel = 0;
+        for (var _i = 0, _a = this.brawlParticipants; _i < _a.length; _i++) {
+            var name_1 = _a[_i];
+            collectiveLevel += this.getPlayer(name_1).level;
+        }
+        // Open sauce? No cheating!
+        var chance = this.brawlAmount * 10 / collectiveLevel;
+        if (chance > 60)
+            chance = 60;
+        this.sendMessage(chance + "% to win");
+        var survivors = [];
+        for (var _b = 0, _c = this.brawlParticipants; _b < _c.length; _b++) {
+            var name_2 = _c[_b];
+            var player = this.getPlayer(name_2);
+            if (Math.random() * 100 <= chance) {
+                survivors.push(player.name);
+            }
+        }
+        if (survivors.length === 0) {
+            this.sendMessage('No one survived the brawl.');
+        }
+        else {
+            var xp = Math.floor(this.brawlAmount * 1.5 / survivors.length);
+            var gold = Math.floor(this.brawlAmount * 1.25 / survivors.length);
+            this.sendMessage(survivors.join(', ') + " barely survived the brawl. " + xp + " experience and " + gold + " have been awarded to the survivors.");
+            for (var _d = 0, survivors_1 = survivors; _d < survivors_1.length; _d++) {
+                var name_3 = survivors_1[_d];
+                var player = this.getPlayer(name_3);
+                player.addExperience(xp);
+                player.addGold(gold);
+            }
+        }
+        this.brawlAmount = 0;
+        this.brawlParticipants = [];
     };
     BattleForCorvusBot.prototype.closeGame = function () {
         if (!this.game)

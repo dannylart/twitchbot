@@ -28,6 +28,11 @@ export class Player extends Character {
         this.save();
     }
 
+    public removeGold(gold: number): void {
+        this.gold -= gold;
+        this.save();
+    }
+
     public addExperience(xp: number): void {
         this.experience += xp;
         this.save();
@@ -117,6 +122,7 @@ export class Player extends Character {
 
     private save(): void {
         jsonfile.writeFile(this.fileName(), {
+            gold: this.gold,
             experience: this.experience,
             health: this.maxHealth,
             mana: this.maxMana,
