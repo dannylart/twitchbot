@@ -1,17 +1,19 @@
 import { Game } from './Game';
-import { SocketClient } from './SocketClient';
 import { Player } from './Player';
+import { SocketClient } from './SocketClient';
 export declare class BattleForCorvusBot extends SocketClient {
     private config;
     private reUser;
     private reTransfer;
     private transferred;
+    private brawlAmount;
     private game;
     private gameTimeout;
     private participants;
     private canSendMessage;
     private messageQueue;
     private messageTimeout;
+    private lockedPlayers;
     constructor(env: any);
     sendMessage(message: string): void;
     processAction(player: string, message: string): void;

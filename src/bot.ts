@@ -13,12 +13,14 @@ export class BattleForCorvusBot extends SocketClient {
     private reUser: RegExp;
     private reTransfer: RegExp;
     private transferred: number;
+    private brawlAmount: number;
     private game: Game | null;
     private gameTimeout: any;
     private participants: string[];
     private canSendMessage: boolean;
     private messageQueue: string[];
     private messageTimeout: any;
+    private lockedPlayers: string[];
 
     constructor(env: any) {
         super();
@@ -28,6 +30,7 @@ export class BattleForCorvusBot extends SocketClient {
         this.messageQueue = [];
         this.transferred = 0;
         this.config = env as IEnvironment;
+        this.lockedPlayers = [];
         this.bind('connected', this.onConnect, this);
         this.connect(this.config);
     }
@@ -68,6 +71,16 @@ export class BattleForCorvusBot extends SocketClient {
         const player: Player | null = game.getPlayer(playerName);
         if (player === null) return;
 
+        // Lock player whispers if a game is not active
+        const locked: boolean = this.lockedPlayers.indexOf(playerName) > -1;
+        if (!this.game && !locked) {
+            this.lockedPlayers.push(playerName);
+        } else if (!this.game && locked) {
+            this.sendMessage(`/w ${player.name} Player file locked. Please try the command again in a few moments.`);
+
+            return;
+        }
+
         if (player.loaded) {
             this._processWhisperedAction(game, player, message);
         } else {
@@ -83,6 +96,12 @@ export class BattleForCorvusBot extends SocketClient {
             if (a.keyword === parts[0] && a.whisper) {
                 const action: IAction = new (a as any)(game, player, parts);
                 const result: IActionResult = action.process();
+
+                // Queue the player to be removed from locked players
+                // @todo: Quick fix. Still leaves a little room for player file to be opened before it's saved, will fix later
+                if (!this.game && this.lockedPlayers.indexOf(player.name) > -1)
+                    this.lockedPlayers.splice(this.lockedPlayers.indexOf(player.name), 1);
+
                 if (result.message)
                     this.sendMessage(`/w ${player.name} ${result.message}`);
             } else if (a.keyword === parts[0] && !a.whisper) {
@@ -118,7 +137,7 @@ export class BattleForCorvusBot extends SocketClient {
     private getUsername(data: string): UserName {
         const r: any = this.reUser.exec(data);
         if (r && r.length > 1)
-            return r[1];
+            return r[1].toLowerCase();
 
         return null;
     }
@@ -168,6 +187,9 @@ export class BattleForCorvusBot extends SocketClient {
                 this.gameTimeout = setTimeout(this.startGame.bind(this), 30000);
                 this.sendMessage(`Thanks, ${p}! Current game is at ${this.transferred} peggles. Type '!give BattleForCorvus #' to make the next battle more difficult. The next battle will start in 30 seconds. Transferring more peggles will reset the 30 second timer.`);
             }
+        } else if ((message as string).substr(0, 6) === '!brawl') {
+            const parts: string[] = (message as string).trim().split(' ');
+            const amount: number = parseInt(parts[1]);
         } else if (this.game) {
             this.processAction((username as string).toLowerCase(), (message as string).toLowerCase());
         }
@@ -194,6 +216,7 @@ export class BattleForCorvusBot extends SocketClient {
             const amount: number = Math.floor(this.game.difficulty / playersRemaining);
             for (const player of this.game.players) {
                 if (!player.dead)
+                    //this.sendMessage(`!give ${player.name} ${amount}`);
                     player.addGold(amount);
                 }
         }

@@ -23,6 +23,7 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
         _this.messageQueue = [];
         _this.transferred = 0;
         _this.config = env;
+        _this.lockedPlayers = [];
         _this.bind('connected', _this.onConnect, _this);
         _this.connect(_this.config);
         return _this;
@@ -64,6 +65,15 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
         var player = game.getPlayer(playerName);
         if (player === null)
             return;
+        // Lock player whispers if a game is not active
+        var locked = this.lockedPlayers.indexOf(playerName) > -1;
+        if (!this.game && !locked) {
+            this.lockedPlayers.push(playerName);
+        }
+        else if (!this.game && locked) {
+            this.sendMessage("/w " + player.name + " Player file locked. Please try the command again in a few moments.");
+            return;
+        }
         if (player.loaded) {
             this._processWhisperedAction(game, player, message);
         }
@@ -80,6 +90,10 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
             if (a.keyword === parts[0] && a.whisper) {
                 var action = new a(game, player, parts);
                 var result = action.process();
+                // Queue the player to be removed from locked players
+                // @todo: Still leaves a little room for player file to be opened before it's saved, will fix later
+                if (!this.game)
+                    this.lockedPlayers.splice(this.lockedPlayers.indexOf(player.name), 1);
                 if (result.message)
                     this.sendMessage("/w " + player.name + " " + result.message);
             }
@@ -112,7 +126,7 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
     BattleForCorvusBot.prototype.getUsername = function (data) {
         var r = this.reUser.exec(data);
         if (r && r.length > 1)
-            return r[1];
+            return r[1].toLowerCase();
         return null;
     };
     BattleForCorvusBot.prototype.onData = function (data) {
@@ -159,6 +173,10 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
                 this.sendMessage("Thanks, " + p + "! Current game is at " + this.transferred + " peggles. Type '!give BattleForCorvus #' to make the next battle more difficult. The next battle will start in 30 seconds. Transferring more peggles will reset the 30 second timer.");
             }
         }
+        else if (message.substr(0, 6) === '!brawl') {
+            var parts = message.trim().split(' ');
+            var amount = parseInt(parts[1]);
+        }
         else if (this.game) {
             this.processAction(username.toLowerCase(), message.toLowerCase());
         }
@@ -183,7 +201,8 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
             for (var _i = 0, _a = this.game.players; _i < _a.length; _i++) {
                 var player = _a[_i];
                 if (!player.dead)
-                    this.sendMessage("!give " + player.name + " " + amount);
+                    //this.sendMessage(`!give ${player.name} ${amount}`);
+                    player.addGold(amount);
             }
         }
         this.game = null;

@@ -93,7 +93,7 @@ export class Player extends Character {
     private open(): void {
         jsonfile.readFile(this.fileName(), (err: string, obj: any) => {
             if (!err) {
-                this.gold = obj.gold || 0;
+                this.gold = obj.gold || 100;
                 this.experience = obj.experience || 0;
                 this.health = this.maxHealth = obj.health || 100;
                 this.mana = this.maxMana = obj.mana || 50;
@@ -105,13 +105,13 @@ export class Player extends Character {
                 this.inventory = obj.inventory || {};
                 this.classes = obj.classes || {};
             } else {
-                this.gold = 0;
+                this.gold = 100;
                 this.experience = 0;
                 this.inventory = {};
                 this.classes = {};
             }
             this.loaded = true;
-            this.trigger('loaded');
+            this.trigger('loaded', this);
         });
     }
 

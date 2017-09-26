@@ -25,6 +25,10 @@ var Player = /** @class */ (function (_super) {
         _this.open();
         return _this;
     }
+    Player.prototype.addGold = function (gold) {
+        this.gold += gold;
+        this.save();
+    };
     Player.prototype.addExperience = function (xp) {
         this.experience += xp;
         this.save();
@@ -84,7 +88,7 @@ var Player = /** @class */ (function (_super) {
         var _this = this;
         jsonfile.readFile(this.fileName(), function (err, obj) {
             if (!err) {
-                _this.gold = obj.gold || 0;
+                _this.gold = obj.gold || 100;
                 _this.experience = obj.experience || 0;
                 _this.health = _this.maxHealth = obj.health || 100;
                 _this.mana = _this.maxMana = obj.mana || 50;
@@ -96,13 +100,13 @@ var Player = /** @class */ (function (_super) {
                 _this.classes = obj.classes || {};
             }
             else {
-                _this.gold = 0;
+                _this.gold = 100;
                 _this.experience = 0;
                 _this.inventory = {};
                 _this.classes = {};
             }
             _this.loaded = true;
-            _this.trigger('loaded');
+            _this.trigger('loaded', _this);
         });
     };
     Player.prototype.save = function () {
@@ -116,6 +120,8 @@ var Player = /** @class */ (function (_super) {
             luck: this.luck,
             classes: this.classes,
             inventory: this.inventory
+        }, null, function (err) {
+            console.log('err', err);
         });
     };
     return Player;

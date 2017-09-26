@@ -10,6 +10,7 @@ export declare class Player extends Character {
     gold: number;
     experience: number;
     constructor(name: string);
+    addGold(gold: number): void;
     addExperience(xp: number): void;
     readonly level: number;
     levelUp(cls: string, attrs: IAttributes): number;
