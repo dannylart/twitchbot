@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Action_1 = require("../Action");
+var EActionType_1 = require("../EActionType");
 var Craft = /** @class */ (function (_super) {
     __extends(Craft, _super);
     function Craft() {
@@ -20,6 +21,11 @@ var Craft = /** @class */ (function (_super) {
         return { message: this.player.name + " crafts.", success: false };
     };
     Craft.keyword = ':!craft';
+    Craft.types = [
+        EActionType_1.EActionType.GENERAL,
+        EActionType_1.EActionType.WHISPER,
+        EActionType_1.EActionType.EXPLORATION
+    ];
     return Craft;
 }(Action_1.Action));
 exports.Craft = Craft;

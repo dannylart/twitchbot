@@ -1,12 +1,9 @@
-import { EventDispatcher } from 'simple-ts-event-dispatcher';
-import { Action } from './Action';
+import { Activity } from './Activity';
 import { BattleForCorvusBot } from './bot';
 import { Player } from './Player';
 import { IRoom, Room } from './Room';
-export declare class Game extends EventDispatcher {
-    static actions: typeof Action[];
+export declare class Game extends Activity {
     static roomTypes: typeof Room[];
-    commander: Player;
     participants: string[];
     playerTurn: number | null;
     room: IRoom;
@@ -31,8 +28,7 @@ export declare class Game extends EventDispatcher {
     readonly playersRemaining: number;
     randomAlivePlayer(): Player | null;
     getPlayer(playerName: string): Player | null;
-    getActions(): string[];
-    getWhisperActions(): string[];
     generateRandomRoom(id: number, x: number, y: number): IRoom;
+    getActions(): string[];
     private loop();
 }

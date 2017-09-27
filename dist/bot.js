@@ -11,6 +11,8 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var envData = require("../env.json");
+var ActionManager_1 = require("./ActionManager");
+var EActionType_1 = require("./EActionType");
 var Game_1 = require("./Game");
 var Player_1 = require("./Player");
 var SocketClient_1 = require("./SocketClient");
@@ -59,7 +61,7 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
         var parts = message.trim().split(' ');
         var hasEnemies = this.game.room.hasEnemies;
         console.log(parts);
-        for (var _i = 0, _a = Game_1.Game.actions; _i < _a.length; _i++) {
+        for (var _i = 0, _a = ActionManager_1.ActionManager.actions; _i < _a.length; _i++) {
             var a = _a[_i];
             if (a.keyword === parts[0] && a.combat === hasEnemies) {
                 var action = new a(this.game, this.game.player, parts);
@@ -97,7 +99,7 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
     };
     BattleForCorvusBot.prototype._processWhisperedAction = function (game, player, message) {
         var parts = message.trim().split(' ');
-        for (var _i = 0, _a = Game_1.Game.actions; _i < _a.length; _i++) {
+        for (var _i = 0, _a = ActionManager_1.ActionManager.actions; _i < _a.length; _i++) {
             var a = _a[_i];
             if (a.keyword === parts[0] && a.whisper) {
                 var action = new a(game, player, parts);
@@ -106,7 +108,7 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
                     this.sendWhisper(player, result.message);
             }
             else if (a.keyword === parts[0] && !a.whisper) {
-                this.sendWhisper(player, "Currently cannot use " + parts[0].substr(1) + ". Available whisper commands: " + game.getWhisperActions().join(', '));
+                this.sendWhisper(player, "Currently cannot use " + parts[0].substr(1) + ". Available whisper commands: " + ActionManager_1.ActionManager.getActions(EActionType_1.EActionType.WHISPER).join(', '));
             }
         }
     };
@@ -199,6 +201,23 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
             }
         }
         else if (message.substr(0, 7) === ':!brawl') {
+            var parts = message.split(' ');
+            var amount = parseInt(parts[1]);
+            if (player.gold >= amount) {
+                player.removeGold(amount);
+                if (this.brawlParticipants.indexOf(player.name) === -1)
+                    this.brawlParticipants.push(player.name);
+                if (this.brawlAmount === 0)
+                    this.sendMessage("A brawl is going to start soon! Type '!brawl gold_amount' to join!");
+                this.brawlAmount += amount;
+                clearTimeout(this.brawlTimeout);
+                this.brawlTimeout = setTimeout(this.startBrawl.bind(this), 15000);
+            }
+            else {
+                this.sendWhisper(player, "You do not have enough gold to !brawl " + amount + ". You have " + player.gold);
+            }
+        }
+        else if (message.substr(0, 7) === ':!raid') {
             var parts = message.split(' ');
             var amount = parseInt(parts[1]);
             if (player.gold >= amount) {

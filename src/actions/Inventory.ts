@@ -1,8 +1,13 @@
 import {Action, IActionResult} from '../Action';
+import {EActionType} from '../EActionType';
 
 export class Inventory extends Action {
     public static keyword: string = ':!inventory';
-    public static whisper: boolean = true;
+    public static types: EActionType[] = [
+        EActionType.GENERAL,
+        EActionType.WHISPER,
+        EActionType.EXPLORATION
+    ];
 
     public process(): IActionResult {
         const items: string[] = [];

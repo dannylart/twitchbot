@@ -1,9 +1,14 @@
 import {Action, IActionResult} from '../Action';
 import {ClassManager} from '../ClassManager';
+import {EActionType} from '../EActionType';
 
 export class Level extends Action {
     public static keyword: string = ':!level';
-    public static whisper: boolean = true;
+    public static types: EActionType[] = [
+        EActionType.GENERAL,
+        EActionType.WHISPER,
+        EActionType.EXPLORATION
+    ];
 
     public process(): IActionResult {
         const requirement: number = Math.floor((Math.log10(this.player.level + 1) + 1) * 250 * this.player.level + 100);

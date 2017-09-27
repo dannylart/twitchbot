@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Action_1 = require("../Action");
+var EActionType_1 = require("../EActionType");
 var Hide = /** @class */ (function (_super) {
     __extends(Hide, _super);
     function Hide() {
@@ -23,7 +24,7 @@ var Hide = /** @class */ (function (_super) {
         };
     };
     Hide.keyword = ':!hide';
-    Hide.combat = true;
+    Hide.types = [EActionType_1.EActionType.COMBAT];
     return Hide;
 }(Action_1.Action));
 exports.Hide = Hide;

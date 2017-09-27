@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Action_1 = require("../Action");
+var EActionType_1 = require("../EActionType");
 var Inventory = /** @class */ (function (_super) {
     __extends(Inventory, _super);
     function Inventory() {
@@ -27,7 +28,11 @@ var Inventory = /** @class */ (function (_super) {
         };
     };
     Inventory.keyword = ':!inventory';
-    Inventory.whisper = true;
+    Inventory.types = [
+        EActionType_1.EActionType.GENERAL,
+        EActionType_1.EActionType.WHISPER,
+        EActionType_1.EActionType.EXPLORATION
+    ];
     return Inventory;
 }(Action_1.Action));
 exports.Inventory = Inventory;

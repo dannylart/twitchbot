@@ -1,5 +1,7 @@
 import * as envData from '../env.json';
 import {IAction, IActionResult} from './Action';
+import {ActionManager} from './ActionManager';
+import {EActionType} from './EActionType';
 import {Game} from './Game';
 import {IEnvironment} from './IEnvironment';
 import {Player} from './Player';
@@ -70,12 +72,12 @@ export class BattleForCorvusBot extends SocketClient {
         const parts: string[] = message.trim().split(' ');
         const hasEnemies: boolean = this.game.room.hasEnemies;
         console.log(parts);
-        for (const a of Game.actions) {
+        for (const a of ActionManager.actions) {
             if (a.keyword === parts[0] && a.combat === hasEnemies) {
                 const action: IAction = new (a as any)(this.game, this.game.player, parts);
                 const result: IActionResult = action.process();
                 if (result.message)
-                    if (a.whisper) {
+                    if (a.types.indexOf(EActionType.WHISPER) > -1) {
                         this.sendWhisper(player, result.message);
                     } else {
                         this.sendMessage(result.message);
@@ -106,14 +108,14 @@ export class BattleForCorvusBot extends SocketClient {
 
     protected _processWhisperedAction(game: Game, player: Player, message: string): void {
         const parts: string[] = message.trim().split(' ');
-        for (const a of Game.actions) {
+        for (const a of ActionManager.actions) {
             if (a.keyword === parts[0] && a.whisper) {
                 const action: IAction = new (a as any)(game, player, parts);
                 const result: IActionResult = action.process();
                 if (result.message)
                     this.sendWhisper(player, result.message);
             } else if (a.keyword === parts[0] && !a.whisper) {
-                this.sendWhisper(player, `Currently cannot use ${parts[0].substr(1)}. Available whisper commands: ${game.getWhisperActions().join(', ')}`);
+                this.sendWhisper(player, `Currently cannot use ${parts[0].substr(1)}. Available whisper commands: ${ActionManager.getActions(EActionType.WHISPER).join(', ')}`);
             }
         }
     }
@@ -170,7 +172,7 @@ export class BattleForCorvusBot extends SocketClient {
         }
     }
 
-    private _onData(player: Player, line: string[]) {
+    private _onData(player: Player, line: string[]): void {
         if (line[1] === 'PRIVMSG') {
             const info: Message = line.shift();
             const action: Message = line.shift();
@@ -214,6 +216,22 @@ export class BattleForCorvusBot extends SocketClient {
                 this.sendMessage(`Thanks, ${p}! Current game is at ${this.transferred} peggles. Type '!give BattleForCorvus #' to make the next battle more difficult. The next battle will start in 30 seconds. Transferring more peggles will reset the 30 second timer.`);
             }
         } else if (message.substr(0, 7) === ':!brawl') {
+            const parts: string[] = message.split(' ');
+            const amount: number = parseInt(parts[1]);
+            if (player.gold >= amount) {
+                player.removeGold(amount);
+                if (this.brawlParticipants.indexOf(player.name) === -1)
+                    this.brawlParticipants.push(player.name);
+                if (this.brawlAmount === 0)
+                    this.sendMessage(`A brawl is going to start soon! Type '!brawl gold_amount' to join!`);
+                this.brawlAmount += amount;
+                clearTimeout(this.brawlTimeout);
+                this.brawlTimeout = setTimeout(this.startBrawl.bind(this), 15000);
+            } else {
+                this.sendWhisper(player, `You do not have enough gold to !brawl ${amount}. You have ${player.gold}`);
+            }
+
+        } else if (message.substr(0, 7) === ':!raid') {
             const parts: string[] = message.split(' ');
             const amount: number = parseInt(parts[1]);
             if (player.gold >= amount) {

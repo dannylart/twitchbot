@@ -1,19 +1,4 @@
-import {EventDispatcher} from 'simple-ts-event-dispatcher';
-import {Action} from './Action';
-import {Attack} from './actions/Attack';
-import {Cast} from './actions/Cast';
-import {Craft} from './actions/Craft';
-import {EndTurn} from './actions/EndTurn';
-import {Examine} from './actions/Examine';
-import {Flee} from './actions/Flee';
-import {Go} from './actions/Go';
-import {Hide} from './actions/Hide';
-import {Inventory} from './actions/Inventory';
-import {Level} from './actions/Level';
-import {Loot} from './actions/Loot';
-import {Status} from './actions/Status';
-import {Take} from './actions/Take';
-import {Use} from './actions/Use';
+import {Activity} from './Activity';
 import {BattleForCorvusBot} from './bot';
 import {Player} from './Player';
 import {IRoom, Room} from './Room';
@@ -21,13 +6,13 @@ import {Crypt} from './rooms/Crypt';
 import {Entrance} from './rooms/Entrance';
 import {Library} from './rooms/Library';
 import {Smithy} from './rooms/Smithy';
+import {ActionManager} from './ActionManager';
+import {EActionType} from './EActionType';
 
 const DIFFICULTIES: number[] = [1, 50, 200, 500, 1000];
 
-export class Game extends EventDispatcher {
-    public static actions: typeof Action[];
+export class Game extends Activity {
     public static roomTypes: typeof Room[];
-    public commander: Player;
     public participants: string[];
     public playerTurn: number | null;
     public room: IRoom;
@@ -173,35 +158,19 @@ export class Game extends EventDispatcher {
         return this.bot.getPlayer(playerName);
     }
 
-    public getActions(): string[] {
-        const actions: string[] = [];
-        const hasEnemies: boolean = this.room.hasEnemies;
-
-        for (const a of Game.actions) {
-            if (a.combat === hasEnemies)
-                actions.push(a.keyword.substr(1));
-        }
-
-        return actions;
-    }
-
-    public getWhisperActions(): string[] {
-        const actions: string[] = [];
-        for (const a of Game.actions) {
-            if (a.whisper)
-                actions.push(a.keyword.substr(1));
-        }
-
-        return actions;
-    }
-
     public generateRandomRoom(id: number, x: number, y: number): IRoom {
         const room: any = Game.roomTypes[Math.floor(Math.random() * Game.roomTypes.length)];
 
         return new room(this, id, x, y, this.difficultyLevel + Math.floor(x / 2) + Math.floor(y / 2)) as IRoom;
     }
 
-
+    public getActions(): string[] {
+        if (this.room && this.room.hasEnemies) {
+            return ActionManager.getActions(EActionType.COMBAT);
+        } else {
+            return ActionManager.getActions(EActionType.EXPLORATION);
+        }
+    }
 
     private loop(): void {
         if (this.gameOver) return;
@@ -210,22 +179,6 @@ export class Game extends EventDispatcher {
         if (p === null || p.dead) this.endTurn();
     }
 }
-
-Game.actions = [];
-Game.actions.push(Attack);
-Game.actions.push(Cast);
-Game.actions.push(Craft);
-Game.actions.push(EndTurn);
-Game.actions.push(Examine);
-Game.actions.push(Flee);
-Game.actions.push(Go);
-Game.actions.push(Hide);
-Game.actions.push(Inventory);
-Game.actions.push(Level);
-Game.actions.push(Loot);
-Game.actions.push(Status);
-Game.actions.push(Take);
-Game.actions.push(Use);
 
 Game.roomTypes = [];
 Game.roomTypes.push(Library);

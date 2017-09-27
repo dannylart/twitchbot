@@ -12,6 +12,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Action_1 = require("../Action");
 var ClassManager_1 = require("../ClassManager");
+var EActionType_1 = require("../EActionType");
 var Level = /** @class */ (function (_super) {
     __extends(Level, _super);
     function Level() {
@@ -48,7 +49,11 @@ var Level = /** @class */ (function (_super) {
         }
     };
     Level.keyword = ':!level';
-    Level.whisper = true;
+    Level.types = [
+        EActionType_1.EActionType.GENERAL,
+        EActionType_1.EActionType.WHISPER,
+        EActionType_1.EActionType.EXPLORATION
+    ];
     return Level;
 }(Action_1.Action));
 exports.Level = Level;

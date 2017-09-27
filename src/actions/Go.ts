@@ -1,8 +1,10 @@
 import {Action, IActionResult} from '../Action';
+import {EActionType} from '../EActionType';
 import {IRoom} from '../Room';
 
 export class Go extends Action {
     public static keyword: string = ':!go';
+    public static types: EActionType[] = [EActionType.EXPLORATION];
 
     public process(): IActionResult {
         const direction: string = this.parts[1];

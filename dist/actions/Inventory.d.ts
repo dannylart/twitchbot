@@ -1,6 +1,7 @@
 import { Action, IActionResult } from '../Action';
+import { EActionType } from '../EActionType';
 export declare class Inventory extends Action {
     static keyword: string;
-    static whisper: boolean;
+    static types: EActionType[];
     process(): IActionResult;
 }

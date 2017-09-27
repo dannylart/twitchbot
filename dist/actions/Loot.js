@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Action_1 = require("../Action");
+var EActionType_1 = require("../EActionType");
 var Loot = /** @class */ (function (_super) {
     __extends(Loot, _super);
     function Loot() {
@@ -23,6 +24,9 @@ var Loot = /** @class */ (function (_super) {
         };
     };
     Loot.keyword = ':!loot';
+    Loot.types = [
+        EActionType_1.EActionType.EXPLORATION
+    ];
     return Loot;
 }(Action_1.Action));
 exports.Loot = Loot;

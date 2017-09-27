@@ -1,5 +1,6 @@
 import { Game } from './Game';
 import { Player } from './Player';
+import { EActionType } from './EActionType';
 export interface IActionResult {
     message?: string;
     success: boolean;
@@ -12,8 +13,7 @@ export declare abstract class Action implements IAction {
     protected player: Player;
     protected parts: string[];
     static keyword: string;
-    static combat: boolean;
-    static whisper: boolean;
+    static types: EActionType[];
     constructor(game: Game, player: Player, parts: string[]);
     abstract process(): IActionResult;
     protected addPartyExperienceAndGold(experience: number): string;

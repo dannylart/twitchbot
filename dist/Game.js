@@ -10,25 +10,13 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var simple_ts_event_dispatcher_1 = require("simple-ts-event-dispatcher");
-var Attack_1 = require("./actions/Attack");
-var Cast_1 = require("./actions/Cast");
-var Craft_1 = require("./actions/Craft");
-var EndTurn_1 = require("./actions/EndTurn");
-var Examine_1 = require("./actions/Examine");
-var Flee_1 = require("./actions/Flee");
-var Go_1 = require("./actions/Go");
-var Hide_1 = require("./actions/Hide");
-var Inventory_1 = require("./actions/Inventory");
-var Level_1 = require("./actions/Level");
-var Loot_1 = require("./actions/Loot");
-var Status_1 = require("./actions/Status");
-var Take_1 = require("./actions/Take");
-var Use_1 = require("./actions/Use");
+var Activity_1 = require("./Activity");
 var Crypt_1 = require("./rooms/Crypt");
 var Entrance_1 = require("./rooms/Entrance");
 var Library_1 = require("./rooms/Library");
 var Smithy_1 = require("./rooms/Smithy");
+var ActionManager_1 = require("./ActionManager");
+var EActionType_1 = require("./EActionType");
 var DIFFICULTIES = [1, 50, 200, 500, 1000];
 var Game = /** @class */ (function (_super) {
     __extends(Game, _super);
@@ -174,28 +162,17 @@ var Game = /** @class */ (function (_super) {
             return null;
         return this.bot.getPlayer(playerName);
     };
-    Game.prototype.getActions = function () {
-        var actions = [];
-        var hasEnemies = this.room.hasEnemies;
-        for (var _i = 0, _a = Game.actions; _i < _a.length; _i++) {
-            var a = _a[_i];
-            if (a.combat === hasEnemies)
-                actions.push(a.keyword.substr(1));
-        }
-        return actions;
-    };
-    Game.prototype.getWhisperActions = function () {
-        var actions = [];
-        for (var _i = 0, _a = Game.actions; _i < _a.length; _i++) {
-            var a = _a[_i];
-            if (a.whisper)
-                actions.push(a.keyword.substr(1));
-        }
-        return actions;
-    };
     Game.prototype.generateRandomRoom = function (id, x, y) {
         var room = Game.roomTypes[Math.floor(Math.random() * Game.roomTypes.length)];
         return new room(this, id, x, y, this.difficultyLevel + Math.floor(x / 2) + Math.floor(y / 2));
+    };
+    Game.prototype.getActions = function () {
+        if (this.room && this.room.hasEnemies) {
+            return ActionManager_1.ActionManager.getActions(EActionType_1.EActionType.COMBAT);
+        }
+        else {
+            return ActionManager_1.ActionManager.getActions(EActionType_1.EActionType.EXPLORATION);
+        }
     };
     Game.prototype.loop = function () {
         if (this.gameOver)
@@ -207,23 +184,8 @@ var Game = /** @class */ (function (_super) {
             this.endTurn();
     };
     return Game;
-}(simple_ts_event_dispatcher_1.EventDispatcher));
+}(Activity_1.Activity));
 exports.Game = Game;
-Game.actions = [];
-Game.actions.push(Attack_1.Attack);
-Game.actions.push(Cast_1.Cast);
-Game.actions.push(Craft_1.Craft);
-Game.actions.push(EndTurn_1.EndTurn);
-Game.actions.push(Examine_1.Examine);
-Game.actions.push(Flee_1.Flee);
-Game.actions.push(Go_1.Go);
-Game.actions.push(Hide_1.Hide);
-Game.actions.push(Inventory_1.Inventory);
-Game.actions.push(Level_1.Level);
-Game.actions.push(Loot_1.Loot);
-Game.actions.push(Status_1.Status);
-Game.actions.push(Take_1.Take);
-Game.actions.push(Use_1.Use);
 Game.roomTypes = [];
 Game.roomTypes.push(Library_1.Library);
 Game.roomTypes.push(Smithy_1.Smithy);

@@ -15,8 +15,7 @@ var Action = /** @class */ (function () {
         }
         return "The party has gained " + experience + " experience and " + gold + " gold.";
     };
-    Action.combat = false;
-    Action.whisper = false;
+    Action.types = [];
     return Action;
 }());
 exports.Action = Action;

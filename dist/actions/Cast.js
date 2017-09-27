@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Action_1 = require("../Action");
+var EActionType_1 = require("../EActionType");
 var Focus_1 = require("./spells/Focus");
 var Rush_1 = require("./spells/Rush");
 var SPELLS = [];
@@ -47,7 +48,7 @@ var Cast = /** @class */ (function (_super) {
         };
     };
     Cast.keyword = ':!cast';
-    Cast.combat = true;
+    Cast.types = [EActionType_1.EActionType.COMBAT];
     return Cast;
 }(Action_1.Action));
 exports.Cast = Cast;

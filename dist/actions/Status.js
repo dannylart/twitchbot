@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Action_1 = require("../Action");
+var EActionType_1 = require("../EActionType");
 var Status = /** @class */ (function (_super) {
     __extends(Status, _super);
     function Status() {
@@ -28,7 +29,12 @@ var Status = /** @class */ (function (_super) {
         };
     };
     Status.keyword = ':!status';
-    Status.whisper = true;
+    Status.types = [
+        EActionType_1.EActionType.GENERAL,
+        EActionType_1.EActionType.WHISPER,
+        EActionType_1.EActionType.EXPLORATION,
+        EActionType_1.EActionType.COMBAT
+    ];
     return Status;
 }(Action_1.Action));
 exports.Status = Status;

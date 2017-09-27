@@ -1,5 +1,6 @@
 import {Game} from './Game';
 import {Player} from './Player';
+import {EActionType} from './EActionType';
 
 export interface IActionResult {
     message?: string;
@@ -12,8 +13,7 @@ export interface IAction {
 
 export abstract class Action implements IAction {
     public static keyword: string;
-    public static combat: boolean = false;
-    public static whisper: boolean = false;
+    public static types: EActionType[] = [];
 
     constructor(
         protected game: Game,

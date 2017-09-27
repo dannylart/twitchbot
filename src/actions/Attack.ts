@@ -1,9 +1,10 @@
 import {Action, IActionResult} from '../Action';
 import {Character} from '../Character';
+import {EActionType} from '../EActionType';
 
 export class Attack extends Action {
     public static keyword: string = ':!attack';
-    public static combat: boolean = true;
+    public static types: EActionType[] = [EActionType.COMBAT];
 
     public process(): IActionResult {
         if (this.parts.length > 1) {

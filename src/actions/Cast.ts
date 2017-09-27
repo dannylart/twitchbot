@@ -1,4 +1,5 @@
 import {Action, IActionResult} from '../Action';
+import {EActionType} from '../EActionType';
 import {Focus} from './spells/Focus';
 import {Rush} from './spells/Rush';
 
@@ -8,7 +9,7 @@ SPELLS.push(Rush);
 
 export class Cast extends Action {
     public static keyword: string = ':!cast';
-    public static combat: boolean = true;
+    public static types: EActionType[] = [EActionType.COMBAT];
 
     public process(): IActionResult {
         if (!this.parts[1]) {

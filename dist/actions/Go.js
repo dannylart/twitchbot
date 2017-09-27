@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Action_1 = require("../Action");
+var EActionType_1 = require("../EActionType");
 var Go = /** @class */ (function (_super) {
     __extends(Go, _super);
     function Go() {
@@ -62,6 +63,7 @@ var Go = /** @class */ (function (_super) {
         }
     };
     Go.keyword = ':!go';
+    Go.types = [EActionType_1.EActionType.EXPLORATION];
     return Go;
 }(Action_1.Action));
 exports.Go = Go;

@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Action_1 = require("../Action");
+var EActionType_1 = require("../EActionType");
 var EndTurn = /** @class */ (function (_super) {
     __extends(EndTurn, _super);
     function EndTurn() {
@@ -23,6 +24,10 @@ var EndTurn = /** @class */ (function (_super) {
         };
     };
     EndTurn.keyword = ':!endturn';
+    EndTurn.types = [
+        EActionType_1.EActionType.COMBAT,
+        EActionType_1.EActionType.EXPLORATION
+    ];
     return EndTurn;
 }(Action_1.Action));
 exports.EndTurn = EndTurn;
