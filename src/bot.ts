@@ -70,10 +70,10 @@ export class BattleForCorvusBot extends SocketClient {
             return;
 
         const parts: string[] = message.trim().split(' ');
-        const hasEnemies: boolean = this.game.room.hasEnemies;
+        const actionType: EActionType = this.game.room.hasEnemies ? EActionType.COMBAT : EActionType.EXPLORATION;
         console.log(parts);
         for (const a of ActionManager.actions) {
-            if (a.keyword === parts[0] && a.combat === hasEnemies) {
+            if (a.keyword === parts[0] && ActionManager.actionHasType(a, actionType)) {
                 const action: IAction = new (a as any)(this.game, this.game.player, parts);
                 const result: IActionResult = action.process();
                 if (result.message)
@@ -84,9 +84,9 @@ export class BattleForCorvusBot extends SocketClient {
                     }
 
                 // Can only use one action when there are enemies
-                if (hasEnemies && result.success)
+                if (actionType === EActionType.COMBAT && result.success)
                     this.game.endTurn();
-            } else if (a.keyword === parts[0] && a.combat !== hasEnemies) {
+            } else if (a.keyword === parts[0] && !ActionManager.actionHasType(a, actionType)) {
                 this.sendMessage(`Currently cannot use ${parts[0].substr(1)}. Available commands: ${this.game.getActions().join(', ')}`);
             }
         }
@@ -109,13 +109,16 @@ export class BattleForCorvusBot extends SocketClient {
     protected _processWhisperedAction(game: Game, player: Player, message: string): void {
         const parts: string[] = message.trim().split(' ');
         for (const a of ActionManager.actions) {
-            if (a.keyword === parts[0] && a.whisper) {
-                const action: IAction = new (a as any)(game, player, parts);
-                const result: IActionResult = action.process();
-                if (result.message)
-                    this.sendWhisper(player, result.message);
-            } else if (a.keyword === parts[0] && !a.whisper) {
-                this.sendWhisper(player, `Currently cannot use ${parts[0].substr(1)}. Available whisper commands: ${ActionManager.getActions(EActionType.WHISPER).join(', ')}`);
+            if (a.keyword === parts[0]) {
+                if (ActionManager.actionHasType(a, EActionType.WHISPER)) {
+                    const action: IAction = new (a as any)(game, player, parts);
+                    const result: IActionResult = action.process();
+                    if (result.message)
+                        this.sendWhisper(player, result.message);
+                } else {
+                    this.sendWhisper(player, `Currently cannot use ${parts[0].substr(1)}. Available whisper commands: ${ActionManager.getActions(EActionType.WHISPER).join(', ')}`);
+                }
+                break;
             }
         }
     }

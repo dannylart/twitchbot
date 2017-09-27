@@ -26,6 +26,9 @@ var ActionManager = /** @class */ (function () {
         }
         return actions;
     };
+    ActionManager.actionHasType = function (action, t) {
+        return action.types.indexOf(t) > -1;
+    };
     return ActionManager;
 }());
 exports.ActionManager = ActionManager;

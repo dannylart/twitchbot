@@ -1,4 +1,4 @@
-import {Action, Action} from './Action';
+import {Action} from './Action';
 import {Attack} from './actions/Attack';
 import {Cast} from './actions/Cast';
 import {Craft} from './actions/Craft';

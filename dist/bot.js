@@ -59,25 +59,25 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
         if (this.game.player.name !== player.name || this.game.paused)
             return;
         var parts = message.trim().split(' ');
-        var hasEnemies = this.game.room.hasEnemies;
+        var actionType = this.game.room.hasEnemies ? EActionType_1.EActionType.COMBAT : EActionType_1.EActionType.EXPLORATION;
         console.log(parts);
         for (var _i = 0, _a = ActionManager_1.ActionManager.actions; _i < _a.length; _i++) {
             var a = _a[_i];
-            if (a.keyword === parts[0] && a.combat === hasEnemies) {
+            if (a.keyword === parts[0] && ActionManager_1.ActionManager.actionHasType(a, actionType)) {
                 var action = new a(this.game, this.game.player, parts);
                 var result = action.process();
                 if (result.message)
-                    if (a.whisper) {
+                    if (a.types.indexOf(EActionType_1.EActionType.WHISPER) > -1) {
                         this.sendWhisper(player, result.message);
                     }
                     else {
                         this.sendMessage(result.message);
                     }
                 // Can only use one action when there are enemies
-                if (hasEnemies && result.success)
+                if (actionType === EActionType_1.EActionType.COMBAT && result.success)
                     this.game.endTurn();
             }
-            else if (a.keyword === parts[0] && a.combat !== hasEnemies) {
+            else if (a.keyword === parts[0] && !ActionManager_1.ActionManager.actionHasType(a, actionType)) {
                 this.sendMessage("Currently cannot use " + parts[0].substr(1) + ". Available commands: " + this.game.getActions().join(', '));
             }
         }
@@ -101,14 +101,17 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
         var parts = message.trim().split(' ');
         for (var _i = 0, _a = ActionManager_1.ActionManager.actions; _i < _a.length; _i++) {
             var a = _a[_i];
-            if (a.keyword === parts[0] && a.whisper) {
-                var action = new a(game, player, parts);
-                var result = action.process();
-                if (result.message)
-                    this.sendWhisper(player, result.message);
-            }
-            else if (a.keyword === parts[0] && !a.whisper) {
-                this.sendWhisper(player, "Currently cannot use " + parts[0].substr(1) + ". Available whisper commands: " + ActionManager_1.ActionManager.getActions(EActionType_1.EActionType.WHISPER).join(', '));
+            if (a.keyword === parts[0]) {
+                if (ActionManager_1.ActionManager.actionHasType(a, EActionType_1.EActionType.WHISPER)) {
+                    var action = new a(game, player, parts);
+                    var result = action.process();
+                    if (result.message)
+                        this.sendWhisper(player, result.message);
+                }
+                else {
+                    this.sendWhisper(player, "Currently cannot use " + parts[0].substr(1) + ". Available whisper commands: " + ActionManager_1.ActionManager.getActions(EActionType_1.EActionType.WHISPER).join(', '));
+                }
+                break;
             }
         }
     };
