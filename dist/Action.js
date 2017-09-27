@@ -7,7 +7,7 @@ var Action = /** @class */ (function () {
         this.parts = parts;
     }
     Action.prototype.addPartyExperienceAndGold = function (experience) {
-        var gold = Math.floor(experience * Math.random() * .5);
+        var gold = Math.floor(experience * Math.random() * .1);
         for (var _i = 0, _a = this.game.alivePlayers; _i < _a.length; _i++) {
             var player = _a[_i];
             player.addExperience(experience);

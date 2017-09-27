@@ -65,7 +65,12 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
                 var action = new a(this.game, this.game.player, parts);
                 var result = action.process();
                 if (result.message)
-                    this.sendMessage(result.message);
+                    if (a.whisper) {
+                        this.sendWhisper(player, result.message);
+                    }
+                    else {
+                        this.sendMessage(result.message);
+                    }
                 // Can only use one action when there are enemies
                 if (hasEnemies && result.success)
                     this.game.endTurn();
@@ -77,6 +82,7 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
     };
     BattleForCorvusBot.prototype.processWhisperedAction = function (player, message) {
         var _this = this;
+        console.log('processWhisper', message);
         var game = this.game || new Game_1.Game(this, [player.name], 0);
         if (player === null)
             return;
@@ -106,7 +112,7 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
     };
     BattleForCorvusBot.prototype.processMessageQueue = function () {
         clearTimeout(this.messageTimeout);
-        this.messageTimeout = setTimeout(this.processMessageQueue.bind(this), 500);
+        this.messageTimeout = setTimeout(this.processMessageQueue.bind(this), this.config.messageQueueDelay || 2000);
         if (this.messageQueue.length > 0) {
             this.canSendMessage = false;
             var message = this.messageQueue.shift();
@@ -211,6 +217,9 @@ var BattleForCorvusBot = /** @class */ (function (_super) {
         }
         else if (this.game) {
             this.processAction(player, message.toLowerCase());
+        }
+        else {
+            this.processWhisperedAction(player, message.toLowerCase());
         }
     };
     BattleForCorvusBot.prototype.startGame = function () {

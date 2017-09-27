@@ -75,7 +75,11 @@ export class BattleForCorvusBot extends SocketClient {
                 const action: IAction = new (a as any)(this.game, this.game.player, parts);
                 const result: IActionResult = action.process();
                 if (result.message)
-                    this.sendMessage(result.message);
+                    if (a.whisper) {
+                        this.sendWhisper(player, result.message);
+                    } else {
+                        this.sendMessage(result.message);
+                    }
 
                 // Can only use one action when there are enemies
                 if (hasEnemies && result.success)
@@ -87,6 +91,7 @@ export class BattleForCorvusBot extends SocketClient {
     }
 
     public processWhisperedAction(player: Player, message: string): void {
+        console.log('processWhisper', message);
         const game: Game = this.game || new Game(this, [player.name], 0);
         if (player === null) return;
 
@@ -115,7 +120,7 @@ export class BattleForCorvusBot extends SocketClient {
 
     private processMessageQueue(): void {
         clearTimeout(this.messageTimeout);
-        this.messageTimeout = setTimeout(this.processMessageQueue.bind(this), 500);
+        this.messageTimeout = setTimeout(this.processMessageQueue.bind(this), this.config.messageQueueDelay || 2000);
 
         if (this.messageQueue.length > 0) {
             this.canSendMessage = false;
@@ -225,6 +230,8 @@ export class BattleForCorvusBot extends SocketClient {
             }
         } else if (this.game) {
             this.processAction(player, message.toLowerCase());
+        } else {
+            this.processWhisperedAction(player, message.toLowerCase());
         }
     }
 

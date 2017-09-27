@@ -5,4 +5,5 @@ export interface IEnvironment {
     username: string;
     oauth: string;
     channel: string;
+    messageQueueDelay?: number;
 }
